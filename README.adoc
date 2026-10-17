@@ -1,0 +1,142 @@
+= blog-roq
+:toc: left
+:toclevels: 3
+:sectanchors:
+:icons: font
+
+Personal tech blog of Arkadiusz Mirosław (https://miroslaw.ovh) — programming
+(mainly Java and Clojure), Linux and productivity — built with
+https://iamroq.dev[Roq], a static site generator powered by
+https://quarkus.io[Quarkus].
+
+== Tech stack
+
+* *Engine:* Roq `2.2.0` on Quarkus `3.40.1` (Java 25).
+* *Content:* AsciiDoc (`quarkus-roq-plugin-asciidoc-jruby`) and Markdown
+  (`quarkus-roq-plugin-markdown`).
+* *Syntax highlighting:* https://highlightjs.org[highlight.js] `11.12.0` (bundled
+  from `org.mvnpm`), with custom language labels rendered client-side.
+* *Search:* `quarkus-roq-plugin-lunr`.
+* *Comments:* https://utteranc.es[Utterances] backed by GitHub issues, with
+  automatic dark-mode synchronization.
+* *Navigation & UI:* responsive layout, dark-mode toggle, compact mobile bar,
+  sticky table of contents, custom accent palette.
+* *Other plugins:* sitemap, tagging, series, OG-card generation, faker (dev).
+
+== Getting started
+
+=== Prerequisites
+
+Either the Roq CLI (which installs JBang if needed) — see the
+https://iamroq.dev/docs/getting-started/[Roq getting-started guide] — or a local
+JDK 25 with the bundled Maven wrapper (`./mvnw`).
+
+Install the Roq CLI:
+
+[source,bash]
+----
+curl -Ls https://sh.jbang.dev | bash -s - app install --fresh --force roq@quarkiverse/quarkus-roq
+----
+
+=== Development
+
+Start dev-mode with live reload (http://localhost:8080):
+
+[source,bash]
+----
+# Start dev mode with live-reload
+roq start
+
+# Build the static site
+roq generate
+
+# Preview the generated site
+roq serve
+----
+
+The same via Maven:
+
+[source,bash]
+----
+./mvnw quarkus:dev
+----
+
+Use `-p` (Roq) or `-Dquarkus.http.port=...` (Maven) to change the port.
+
+== Project structure
+
+[source]
+----
+content/            Pages and collections
+  posts/            Blog posts (AsciiDoc/Markdown)
+  about.html        Static pages (HTML)
+templates/
+  layouts/          Page layouts (Qute): main.html, post.html, default.html
+  partials/         Reusable fragments
+data/               Structured data (YAML): authors.yml, menu.yml, portfolio.yml
+public/             Static assets served as-is (images, ...)
+web/                Front-end sources bundled by the Quarkus Web Bundler
+  _custom.css       Project CSS overrides
+  app/              Project JavaScript (auto-bundled)
+src/main/resources/
+  application.properties
+----
+
+NOTE: Every `.js` file under `web/app/` is auto-imported into the bundled
+`app.js`, so no manual registration is required.
+
+== Authoring content
+
+=== Posts
+
+Posts live in `content/posts/` either as a single file (`slug.adoc`) or as a
+bundle directory (`my-post/index.adoc` with its images). Front matter is YAML:
+
+[source,yaml]
+----
+---
+title: Post title
+description: Short summary used for SEO and cards.
+date: 2020-01-01
+image: typewriter-small.avif      # cover image (relative to the bundle/public)
+slug: slowem-wstepu
+author: miro                       # key into data/authors.yml
+category: Blog
+tags:
+  - casual
+content-toc: true                  # render a sticky table of contents
+content-toc-title: Spis
+series: my-series                  # optional, groups related posts
+---
+----
+
+== Comments (GitHub)
+
+Comments use Utterances against the repository
+https://github.com/amiroslaw/blog-comments[`amiroslaw/blog-comments`].
+
+* The mount point is `<section class="page-comments">` in
+  `templates/layouts/post.html` (posts only).
+* `web/app/comments.js` injects the Utterances script and keeps the widget theme
+  in sync with the site's dark-mode toggle.
+* `issue-term` is `og:title`, so a page maps to the GitHub issue whose title
+  equals the post title.
+
+To use a different repository, change `REPO` at the top of `web/app/comments.js`
+and install the Utterances GitHub App on that repository.
+
+== Customization notes
+
+* Styling: `web/_custom.css` is loaded last and is unlayered, so it overrides the
+  theme without `!important`. It also holds the accent palette (`@theme`),
+  the mobile top bar, code-block language labels and the sticky-TOC fix.
+* Syntax highlighting: `web/app/syntax.js` registers the highlight.js languages
+  and appends the language label; `web/_hljs-dark.css` holds dark-theme tweaks.
+* Mobile navigation: `web/app/nav.js` toggles the collapsible menu.
+* Share buttons: the `.page-share` block in `templates/layouts/post.html`.
+
+== Learn more
+
+* https://iamroq.dev/docs/[Roq documentation]
+* https://quarkus.io/guides/qute-reference[Qute template reference]
+* https://iamroq.dev/llms.txt[Roq context for AI assistants]

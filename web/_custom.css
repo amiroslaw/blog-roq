@@ -1,0 +1,502 @@
+/* Theme customization: https://iamroq.dev/theme/default/#css-customization */
+/* Replace these values with any Tailwind color (e.g. var(--color-sky-500)) or custom hex */
+
+@theme inline {
+    /* Accent: Cyan / Turquoise (#17a2b8) */
+    --color-accent-50: #e0f7fa;
+    --color-accent-100: #b2ebf2;
+    --color-accent-200: #80deea;
+    --color-accent-300: #4dd0e1;
+    --color-accent-400: #26c6da;
+    --color-accent-500: #17a2b8;
+    --color-accent-600: #00838f;
+    --color-accent-700: #006064;
+    --color-accent-800: #004d40;
+    --color-accent-900: #00363a;
+    --color-accent-950: #002125;
+
+    /* Pop: Emerald Green */
+    --color-pop-50: var(--color-emerald-50);
+    --color-pop-100: var(--color-emerald-100);
+    --color-pop-200: var(--color-emerald-200);
+    --color-pop-300: var(--color-emerald-300);
+    --color-pop-400: var(--color-emerald-400);
+    --color-pop-500: var(--color-emerald-500);
+    --color-pop-600: var(--color-emerald-600);
+    --color-pop-700: var(--color-emerald-700);
+    --color-pop-800: var(--color-emerald-800);
+    --color-pop-900: var(--color-emerald-900);
+    --color-pop-950: var(--color-emerald-950);
+}
+
+/* Content links + headings accent color
+   Links: accent in both themes. Headings: accent in the light (white) theme only,
+   the dark theme keeps the theme's accent-400 headings. */
+.content-prose a,
+.asciidoc-prose a {
+    @apply text-accent-500 transition-colors;
+}
+
+.content-prose a:hover,
+.asciidoc-prose a:hover {
+    @apply text-accent-700;
+}
+
+.dark .content-prose a,
+.dark .asciidoc-prose a {
+    @apply text-accent-400;
+}
+
+.dark .content-prose a:hover,
+.dark .asciidoc-prose a:hover {
+    @apply text-accent-300;
+}
+
+html:not(.dark) .content-prose :is(h1, h2, h3, h4, h5, h6),
+html:not(.dark) .asciidoc-prose :is(h1, h2, h3, h4, h5, h6) {
+    @apply text-accent-500;
+}
+
+/* Mobile navigation: hamburger toggles menu + contact */
+.nav-toggle {
+    @apply hidden;
+}
+
+/* Gap between the search box and the menu */
+.sidebar-nav .search-trigger-input {
+    @apply mb-4;
+}
+
+@media (width < 48rem) {
+    .nav-toggle {
+        @apply flex absolute top-1 left-3 z-10 h-10 w-10 items-center justify-center rounded-lg;
+        @apply cursor-pointer border border-sidebar-subtle bg-sidebar-subtle text-lg text-sidebar;
+        @apply transition-colors duration-200;
+    }
+
+    .nav-toggle:hover {
+        @apply border-sidebar-muted;
+    }
+
+    /* Dark-mode toggle: pin it into the top bar (top-right) on mobile instead
+       of letting the theme's fixed button float over the content. On desktop
+       (>= 48rem) the theme's fixed top-right placement is kept. */
+    .dark-mode-toggle {
+        @apply flex absolute top-1 right-3 z-10 h-10 w-10 items-center justify-center rounded-lg;
+        @apply border border-sidebar-subtle bg-sidebar-subtle text-lg text-sidebar;
+        @apply shadow-none;
+        scale: none;
+    }
+
+    .dark-mode-toggle:hover {
+        @apply border-sidebar-muted;
+    }
+
+    .sidebar-nav {
+        @apply hidden;
+    }
+
+    .sidebar.main.nav-open .sidebar-nav {
+        @apply block;
+    }
+
+    /* Compact top bar: small logo + hamburger, no title/description text */
+    .sidebar.main {
+        @apply py-1;
+    }
+
+    .sidebar.main .about {
+        @apply m-0 flex min-h-10 items-center justify-center;
+    }
+
+    .sidebar.main .about .site-logo {
+        @apply m-0;
+    }
+
+    .sidebar.main .about .site-logo img {
+        @apply mb-0 h-10 w-10 rounded-full;
+    }
+
+    .sidebar.main .about .site-name,
+    .sidebar.main .about p {
+        @apply hidden;
+    }
+}
+
+/* GitHub comments (utterances) */
+.page-comments {
+    @apply mt-10;
+}
+
+/* Code block language label */
+pre.has-lang {
+    position: relative;
+}
+
+.code-lang {
+    @apply pointer-events-none absolute bottom-[20px] right-3 font-mono text-[0.7rem] leading-none uppercase tracking-wide;
+    @apply text-neutral-400 dark:text-neutral-500;
+}
+
+/* Sticky table of contents
+   The theme hides the article TOC (aside.content-toc) with overflow-x: hidden on
+   .article-page. overflow-x:hidden forces overflow-y to compute to auto, which
+   turns .article-page into a scroll container and confines the sticky .toc-menu,
+   so it scrolls away. clip avoids creating a scroll container while still
+   clipping stray horizontal overflow. */
+.article-page {
+    overflow-x: clip;
+}
+
+/* Mascot logo sizing */
+.roq-hero-logo {
+    @apply w-[180px];
+}
+
+.page-header {
+	@apply my-2
+}
+
+.series > ul {
+	margin-left: 2rem;
+}
+
+/* Post meta: date (left) + category (right) on a single line */
+.post-meta {
+    @apply m-1 flex flex-wrap items-center justify-between gap-2;
+}
+
+.post-meta .date-post {
+    @apply text-xs font-light uppercase text-neutral-800 dark:text-neutral-400;
+}
+
+.post-meta .page-category {
+    @apply m-0 text-right;
+}
+
+/* Post category badge */
+.page-category {
+    @apply mb-3 text-center;
+}
+
+.page-category a {
+    @apply inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide no-underline;
+    @apply text-accent-700 hover:text-accent-900;
+    @apply dark:text-accent-400 dark:hover:text-accent-300;
+}
+
+/* Categories page */
+.categories {
+    @apply flex flex-col gap-10 mt-8;
+}
+
+.category-group h2 {
+    @apply mb-4 text-2xl font-bold text-accent-900 dark:text-accent-400;
+}
+
+.category-count {
+    @apply text-sm font-normal text-neutral-400;
+}
+
+.category-posts {
+    @apply flex flex-col gap-1;
+}
+
+.category-posts li {
+    @apply flex flex-wrap items-baseline justify-between gap-2 border-b border-neutral-200 py-2 dark:border-neutral-700;
+}
+
+.category-posts a {
+    @apply no-underline hover:underline;
+}
+
+.category-posts time {
+    @apply text-xs text-neutral-400;
+}
+
+/* About page */
+.about-cards {
+    @apply mt-8 flex flex-col gap-8;
+}
+
+.about-card {
+    @apply rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm md:p-8;
+    @apply dark:border-neutral-700 dark:bg-neutral-900;
+}
+
+.about-card-title {
+    @apply m-0 flex items-center gap-3 border-b border-neutral-200 pb-3 text-xl font-bold text-accent-900;
+    @apply dark:border-neutral-700 dark:text-accent-400;
+}
+
+.about-card-icon {
+    @apply text-accent-500;
+}
+
+.about-card-body {
+    @apply pt-5;
+}
+
+.about-card-body > :first-child {
+    @apply mt-0;
+}
+
+.about-card-body > :last-child {
+    @apply mb-0;
+}
+
+.about-card-body p {
+    @apply my-3 leading-relaxed text-neutral-700;
+    @apply dark:text-neutral-300;
+}
+
+.about-card-body h4 {
+    @apply mt-0 mb-3 text-base font-semibold text-neutral-800;
+    @apply dark:text-neutral-200;
+}
+
+/* Kim jestem */
+.about-me {
+    @apply flex flex-col gap-6 md:flex-row md:items-start;
+}
+
+.about-portrait {
+    @apply block shrink-0;
+}
+
+.about-portrait img {
+    @apply w-full max-w-[200px] rounded-xl border border-neutral-200 object-cover md:max-w-[220px];
+    @apply dark:border-neutral-700;
+}
+
+.about-me-text {
+    @apply flex-1;
+}
+
+/* Umiejętności */
+.skillbars {
+    @apply flex flex-col gap-5;
+}
+
+.skillbar-head {
+    @apply mb-1.5 flex items-baseline justify-between gap-4;
+}
+
+.skillbar-name {
+    @apply text-sm font-semibold text-neutral-800 dark:text-neutral-200;
+}
+
+.skillbar-percent {
+    @apply text-sm font-semibold tabular-nums text-neutral-500 dark:text-neutral-400;
+}
+
+.skillbar-track {
+    @apply h-3 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800;
+}
+
+.skillbar-bar {
+    @apply h-full w-0 rounded-full;
+    background: var(--bar-color, var(--color-accent-500));
+    transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skillbar-bar {
+        transition: none;
+    }
+}
+
+/* Technologie */
+.tech-grid {
+    @apply grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-4;
+}
+
+.tech-col-title {
+    @apply m-0 mb-3 flex items-center gap-2 text-base font-bold text-accent-800 dark:text-accent-400;
+}
+
+.tech-col-title i {
+    @apply text-lg text-accent-500;
+}
+
+.tech-list {
+    @apply m-0 flex list-none flex-col gap-2 p-0;
+}
+
+.tech-list li {
+    @apply m-0 flex items-center gap-2 text-neutral-700 dark:text-neutral-300;
+}
+
+.tech-list li i {
+    @apply w-4 text-center text-neutral-400;
+}
+
+.tech-list .fa-java {
+    color: #e76f00;
+}
+
+.tech-list .fa-html5 {
+    color: #e34f26;
+}
+
+.tech-list .fa-css3 {
+    color: #1572b6;
+}
+
+.tech-list .fa-js {
+    color: #d9b400;
+}
+
+.tech-list .fa-bootstrap {
+    color: #7952b3;
+}
+
+.tech-list .fa-angular {
+    color: #dd0031;
+}
+
+.tech-list .fa-git-alt {
+    color: #f05032;
+}
+
+.tech-list li:has(.tech-badge) {
+    @apply gap-1.5;
+}
+
+.tech-badge {
+    @apply inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] leading-none;
+}
+
+.tech-badge img {
+    @apply h-3 w-3 object-contain;
+    filter: brightness(0) invert(1);
+}
+
+.tech-badge-spring {
+    background: #6db33f;
+}
+
+.tech-badge-hibernate {
+    background: #8a949b;
+}
+
+.tech-note {
+    @apply mt-6 text-sm text-neutral-400;
+}
+
+/* Portfolio grid */
+.portfolio-grid {
+    @apply mt-8 grid gap-6;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.portfolio-card {
+    @apply block overflow-hidden rounded-xl border border-neutral-200 bg-white text-left no-underline transition-all duration-300;
+    @apply hover:-translate-y-1 hover:shadow-lg;
+    @apply dark:border-neutral-700 dark:bg-neutral-800;
+}
+
+.portfolio-card figure {
+    @apply m-0 aspect-video overflow-hidden bg-neutral-100 dark:bg-neutral-900;
+}
+
+.portfolio-card img {
+    @apply h-full w-full object-cover transition-transform duration-300;
+}
+
+.portfolio-card:hover img {
+    @apply scale-105;
+}
+
+.portfolio-card-body {
+    @apply p-4;
+}
+
+.portfolio-card-body h3 {
+    @apply m-0 mb-1 text-lg font-semibold text-accent-900 dark:text-accent-400;
+}
+
+.portfolio-card-body p {
+    @apply m-0 text-sm text-neutral-600 dark:text-neutral-400;
+}
+
+/* Tighter list spacing in prose content */
+.content-prose ul,
+.content-prose ol,
+.asciidoc-prose ul,
+.asciidoc-prose ol {
+    @apply my-1;
+}
+
+.content-prose li,
+.asciidoc-prose li {
+    @apply my-1;
+}
+
+/* AsciiDoc wraps item text in <p>; typography's direct-child correction
+   doesn't fire because <ul> sits inside .ulist/.olist */
+.content-prose li > p,
+.asciidoc-prose li > p {
+    @apply my-0;
+}
+
+/* Portfolio dialog */
+.portfolio-dialog {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    @apply max-h-[88vh] w-[min(760px,92vw)] overflow-y-auto rounded-2xl border border-neutral-200 bg-white p-0 shadow-2xl;
+    @apply dark:border-neutral-700 dark:bg-neutral-900;
+}
+
+.portfolio-dialog::backdrop {
+    @apply bg-black/60;
+}
+
+.portfolio-dialog-body {
+    @apply p-6 md:p-8;
+    font-size: 1rem;
+    line-height: 1.1;
+}
+
+.portfolio-dialog-body p {
+    @apply my-2;
+}
+
+.portfolio-dialog-body h3 {
+    @apply mt-0 mb-2 text-2xl font-bold text-accent-900 dark:text-accent-400;
+}
+
+.portfolio-dialog-body h4 {
+    @apply mt-4 mb-1 text-sm font-semibold uppercase tracking-wide text-neutral-500;
+}
+
+.portfolio-dialog-caption {
+    @apply text-neutral-500 dark:text-neutral-400;
+}
+
+.portfolio-dialog-image {
+    @apply mb-4 w-full rounded-lg;
+}
+
+.portfolio-dialog-close {
+    @apply absolute top-3 right-3 h-9 w-9 cursor-pointer rounded-full border-none bg-neutral-100 text-xl leading-none;
+    @apply hover:bg-neutral-200;
+    @apply dark:bg-neutral-800 dark:hover:bg-neutral-700;
+}
+
+.portfolio-features {
+    @apply mb-0 flex list-disc flex-col gap-0 pl-5;
+}
+
+.portfolio-screenshots {
+    @apply flex flex-wrap gap-3;
+}
+
+.portfolio-screenshots img {
+    @apply max-h-72 w-auto rounded-lg;
+}
+
+.portfolio-links {
+    @apply mt-6 flex flex-wrap gap-3;
+}

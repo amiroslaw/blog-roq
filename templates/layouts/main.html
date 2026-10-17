@@ -1,0 +1,26 @@
+---
+theme-layout: main
+---
+{#search-overlay /}
+{#insert /}
+
+{#about}
+{#include partials/roq-default/sidebar-about /}
+<button type="button" class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="sidebar-nav">
+  <i class="fa-solid fa-bars" aria-hidden="true"></i>
+</button>
+{/}
+
+{#menu}
+<nav class="sidebar-nav" id="sidebar-nav">
+{#search-button-input /}
+{#include partials/roq-default/sidebar-menu menu=cdi:menu.items /}
+</nav>
+{/}
+
+{#footer}
+<footer class="sidebar-nav">
+{#include partials/roq-default/sidebar-contact /}
+{#include partials/roq-default/sidebar-copyright /}
+</footer>
+{/}

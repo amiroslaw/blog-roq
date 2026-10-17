@@ -1,0 +1,70 @@
+---
+title: Linux vs Windows
+description: Najważniejsze różnice pomiędzy systemem operacyjnym z rodziny Windows i Linuks z perspektywy desktopowego użytkownika. Czyli próba potwierdzenia mojego wyboru.
+date: 2020-01-19
+image: Linux-Vs-Windows-small.avif
+author: miro
+category: Linux
+tags:
+  - Linux
+  - Windows
+content-toc: true
+content-toc-title: Spis
+---
+
+:figure-caption: Img.
+
+Postaram się w tym artykule, wytłumaczyć najważniejsze dla mnie różnice pomiędzy systemem operacyjnym z rodziny Windows a GNU/Linux w wersjach nieserwerowych. Nie będę brać pod uwagę Windowsa XP (oraz wersji starszych), ponieważ sam Microsoft jak i inne firmy porzuciły wsparcie dla niego.
+
+pass:[<iframe width="560" height="315" src="https://www.youtube.com/embed/rbDDSDkWZB8?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>]
+
+Po tym humorystycznym fragmencie z serialu IT crowd (polecam obejrzeć) nie trudno się domyśleć, że jestem zwolennikiem pingwina. Jednak będę daleki od zachęcania używania Linuksa, a tym samym do wskazywania, który jest lepszy. OS jest tylko narzędziem, od nas należy jego wybór. Istotne jest jednak znać alternatywę, aby takiego wyboru dokonać.
+
+== To ten system z pingwinem?
+Linux często jest utożsamiany z jej sympatyczną maskotką - pingwinem Tux.
+
+.Pingwin Tux
+image::Tux.svg[pingwin Tux]
+
+Do nakreślenia filozofii tego systemu operacyjnego, posłużę się cytatem z Wikipedii:
+
+__Linux - rodzina uniksopodobnych systemów operacyjnych opartych na jądrze Linux. Linux jest jednym z przykładów wolnego i otwartego oprogramowania (FLOSS): jego kod źródłowy może być dowolnie wykorzystywany, modyfikowany i rozpowszechniany.__
+
+image:malpa-janusz.avif[małpa janusz,role=right]
+Linus Torvalds twórca Linuksa, pisząc swój system wzorował się na popularnego w tamtym czasie UNIXa. Punktami stycznymi są m.in. hierarchiczna struktura katalogów, wszystko jest plikiem oraz zasada KISS mówiącą, że programy powinny być proste i realizować dobrze jedną rzecz.
+Należy wspomnieć, że do jądra Linuksa (kernela) dodane zostały narzędzia systemowe i biblioteki z projektu GNU, przez co niektórzy wolą nazywać cały ekosystem jako GNU/Linux. Ja w tym i następnych postach będę częściej używał nazwy Linux.
+Ostatnią rzeczą, która jest istotna z przywołanego cytatu, jest to, że cały system jest oparty na wolnościowych licencjach. Oznacza to, że kod jest dostępny dla każdego i każdy może próbować go poprawiać. Dobrym porównaniem jest Wikipedia, która jest otwartą encyklopedią, przez co spora liczba osób uważa to za minus. Jednak jest to ogromna zaleta, która pozwoliła jej stać się jedną z najlepszych jakościowo encyklopedii. Dodatkową zaletą oprogramowania Open Source jest jego darmowa dostępność (w większości przypadków).
+
+Jeśli chcesz bardziej zrozumieć czym jest "Free Software" polecam podstronę dotyczącą filozofii https://www.gnu.org/philosophy/philosophy.html[projektu GNU]. Szczególnie polecam podstronę z piosenkami z https://www.gnu.org/music/[GNU Music and Songs].
+
+== Z technicznego punktu widzenia.
+
+Nie chcę pisać o wizualnym stronie systemów operacyjnych, ponieważ to sprawa indywidualna i zależy od naszych gustów. Oczywiście możemy środowisko graficzne zmienić tak, aby wyglądało jak te stosowane w Windowsach, ale zawsze będzie to coś innego niż oryginał. Druga sprawa to, że wszyscy użytkownicy Windows będą zmuszeni do przerzucenia się na wersję 10. Niektórzy nie lubią kafelków, co powinno być szansą dla linuksowych dystrybucji, które nie mają 'innowacyjnego' wyglądu.
+
+Modyfikacja środowiska graficznego (lub zmianie na inny bez konieczności reinstalacji systemu) - jest jednym z ważniejszym atutem, dla niektórego ludzie używają Linuksa. Oznacza to nie tylko, że możemy zmieniać jego wygląd, ale także dostosowywać do ergonomicznego użytkowania. Na przykład konfigurując system tak, aby używać klawiatury zamiast myszki. W Windows jest to utrudnione lub wymagające dodatkowych aplikacji.
+
+Wymagania sprzętowe znowu są na korzyść Linuksa, zwłaszcza przy niewydajnych komputerach. Wsparcie dla Windows XP jest porzucane przez duże firmy, a nowsze wersje będą działać źle na nich. Konkurencja wymaga mniej pamięci RAM i na dysku twardym oraz oferuje minimalistyczne dystrybucje, które uruchomią się nawet na lodówce. 😉
+
+W Linuksie oszczędzić można RAM, nie instalując antywirusa, co jest częstą praktyką. Wynika to z faktu, iż jest znikoma ilość niebezpiecznego oprogramowania pisanego pod ten system. Głównie dlatego, że nie jest on popularny, a użytkownicy z reguły posiadają większą widzę na temat bezpieczeństwa. W skrócie nie opłaca się pisać szkodliwe programy skierowane do małej grupy docelowej.
+
+Warto wspomnieć, że Windows zbiera o nas dane. Dla niektórych jest to kluczowym czynnikiem, aby nie używać tego systemu. Nie twierdzę, że wszystkie dystrybucje nie robią tego, ale znam tylko jedną, która to robiła.
+
+Pora na wytknięcie największego minusu w systemach GNU/Linux, a mianowicie brak sterowników. O ile nie ma problemów ze sterownikami do pospolitych rzeczy jak myszek, kart sieciowych, które są out of the box w systemie. Zdarzyć się może, że dane urządzenie np. kamerka internetowa nie będzie wspierana.
+
+IMPORTANT: Zanim zdecydujesz się na migrację, uruchom Linuksa w trybie live USB i sprawdź, czy wszystkie Twoje urządzenia (Wi-Fi, drukarka, karta graficzna) działają poprawnie.
+
+=== Gry i aplikacje
+Następna niepodważalna przewaga Windowsa wynikająca z popularności jest dostępność oprogramowania. Od dziesiątek wersji pomniejszych aplikacji do tych wyspecjalizowanych. Wprawdzie używając Linuksa można znaleźć natywne wersje lub dobre alternatywy (polecam https://alternativeto.net/[alternativeTO]), dla programów codziennego użytku. Problem czasami nie do obejścia zaczyna się, gdy musimy korzystać z niektórych profesjonalny narzędzi. Sztandarowym przykładem jest Photoshop, a nawet czasami MS Office. Na osłodę można wspomnieć, że dystrybucje Linuksowe mają swoje odpowiedniki jak Microsoft Store, gdzie trywialnie można instalować aplikacje, które są w większości przypadków darmowe. +
+Osobną kategorią są Gry, których brakuje na Linuksie. Przez SteamOS pojawiła się znaczna ilość tytułów w których można grać, niestety ten produkt okazuje się sprzedażowym niewypałem. Jest wprawdzie projekt https://www.winehq.org/[Wine], który ma na celu uruchamianie aplikacji windowsowskich na Linuksie, jednak nie wszystkie programy się uruchomią. Ja doradzałbym szukać alternatyw, niż instalować natywnych aplikacji z Windowsa przez Wine. Często oszczędzi nam to stresu, podczas występowania błędów. +
+Jako że na tym blogu będę umieszczać posty dotyczące programowania, muszę napisać, że wsparcie dla tego obszaru jest takie same, a nawet czasami lepsze, niż na Windowsie (oprócz .NET), przykładem może być konsola. Używanie terminalu na pingwinie jest znacznie wygodniejsze, dużo przydatnych aplikacji można na niej uruchomić. +
+Oczywiście to nie wszystkie techniczne minusy systemów GNU/Linux. Po szczegóły odsyłam na stronę https://itvision.altervista.org/why.linux.is.not.ready.for.the.desktop.current.html[Major Linux Problems] lub serii filmów https://www.youtube.com/watch?v=SMKeWTVYBUo[Linux Sucks].
+
+=== Wsparcie techniczne
+Płacąc za Windows możemy oczekiwać wsparcie techniczne ze strony Microsoft. Jednanie biznesowe dystrybucje linuksowe oferują ten przywilej np. RedHat. Nie pisałbym tego akapitu, gdyby nie moje doświadczenia z supportem IT od pierwszej wymienionej firmy. Moje kontakty zazwyczaj wyglądały tak jak na tym fragmencie z IT crowd:
+pass:[<iframe width="560" height="315" src="https://www.youtube.com/embed/YhPejfTQfEA?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>]
+Nie oszukuję, raz dosłownie osoba ze wsparcia technicznego poleciła mi reboot systemu. 😊 Niestety porada nie była pomocna, jak i trudno było znaleźć rozwiązanie na błąd systemowy, głównie przez ogromną ilość informacji dotyczących prostych porad. Robię błąd opierając się na moich doznaniach, ale wydaje mi się, że łatwiej znaleźć rozwiązanie problemu na dużej ilości forach i czatach dotyczących Linuksowi.
+
+== Nawyki
+Na zakończenie chciałbym obalić mit, jakoby to Linuksy były tylko dla programistów lub ludzi pracujących w NASA. Oczywiście systemy te utożsamiane są z osobami, które dużo pracują z komputerem. Wynika to z faktu, iż Linux pozwala na większą swobodę i możliwości konfiguracyjne. Obecnie jednak nowoczesne środowiska graficzne są dostosowane dla każdego. W tym momencie możesz zadać pytanie, dlaczego w takim razie nie widać migracji z np. Windowsa to Ubuntu (albo innej dystrybucji). Powodów może być kilka, ale najważniejszy według mnie to nawyki, które bardzo trudno zmienić. Z systemem od Microsoftu wszyscy są zaznajomieni, w szkole jest nauczany, a większość komputerów sprzedaje się z preinstalowanym windowsem. Jestem przekonany, że jakby postawić przed wyborem systemu operacyjnego kogoś, kto pierwszy raz ma z nimi styczność, to wybrałby np. Linux Mint niż Windows 10. Dla przykładu mogę jedynie przedstawić serię filmów "Mum tries out Linux" z kanału OSFirstTimer na YouTube.
+pass:[<iframe width="560" height="315" src="https://www.youtube.com/embed/I-PTQVeCF9k?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>]
+Z drugiej strony nie zachęcam osób do zmiany systemu, które nie chcą zmienić swoich nawyków lub po prostu nie mają na to czasu. Linuksa zaliczyłby do kategorii "easy to learn difficult to master". Oznacza to często, iż instalując Linuksa, trzeba być otwartym na naukę tego systemu i nie bać się konsoli. Na szczęście nie często przytrafi nam się trudniejszy błąd, który wymagać będzie jego użycia.

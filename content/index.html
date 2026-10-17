@@ -1,0 +1,32 @@
+---
+title: "2>/dev/null"
+description: "O programowaniu i Linuksie."
+name: "miroslaw.ovh"
+simple-name: "Mirosław"
+logo: "logo.avif"
+lang: "pl"
+social-email: "ar.miroslaw@gmail.com"
+social-github: "amiroslaw"
+social-linkedin: "arkadiusz-miroslaw"
+layout: home
+---
+
+{#roq/hero }
+  {#title}<span class="shimmer">2>/dev/null</span>{/title}
+  {#tagline}Blog o programowaniu i Linuksie{/tagline}
+  {#subtitle}Luźne notatki o programowaniu, narzędziach uruchamianych w terminalu, Vimie oraz systemach GNU/Linux. Publikuję głównie po to, aby usystematyzować własną wiedzę i podzielić się nią z innymi.{/subtitle}
+  <a href="/blog" class="btn btn-primary"><i class="fa-solid fa-newspaper"></i> Czytaj bloga</a>
+  <a href="/portfolio" class="btn btn-secondary"><i class="fa-solid fa-briefcase"></i> Portfolio</a>
+{/}
+
+<section class="roq-section">
+  <h2>Ostatnie wpisy</h2>
+  <div class="blog-grid">
+    {#for post in site.collections.get('posts')}
+		{#if post_count <= 3}
+			{#roq/postCard post /}
+		{/if}
+    {/for}
+  </div>
+  <p class="home-more"><a href="/blog" class="btn btn-link">Zobacz wszystkie wpisy <i class="fa-solid fa-arrow-right"></i></a></p>
+</section>

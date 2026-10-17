@@ -1,0 +1,75 @@
+---
+layout: main
+asciidoc-attributes:
+  notitle@: ""
+---
+{@io.quarkiverse.roq.frontmatter.runtime.model.DocumentPage page}
+
+{#insert before-article /}
+
+<article class="article-page" xmlns="http://www.w3.org/1999/html">
+  {#insert article-start /}
+  <section class="page-content">
+    {#include partials/roq-default/page-toc /}
+    <section class="content-main">
+      <div class="wrap-content">
+        {#if page.cover}
+        <div class="page-cover-image">
+          <figure>
+            <img class="page-image" src="{=page.cover}" alt="{=page.title}">
+            {#if page.data.figCaption??}
+				<figcaption>{=page.data.figCaption}</figcaption>
+            {/if}
+          </figure>
+        </div>
+        {/if}
+        {#if page.data.date?? || page.data.category??}
+        <div class="post-meta">
+          {#if page.data.date??}
+          <div class="date-post">
+			{=page.data.date}
+          </div>
+          {/if}
+          {#if page.data.category??}
+          <div class="page-category">
+            <a href="{=site.url('/categories')}#{=page.data.category}">{=page.data.category}</a>
+          </div>
+          {/if}
+        </div>
+        {/if}
+
+        {#include partials/roq-default/page-header.html /}
+
+        {#include partials/roq-series /}
+
+        <section class="{=page.source.markup is 'asciidoc' ? 'asciidoc-prose' : 'content-prose'}">
+          {#insert /}
+        </section>
+
+        <div class="page-footer">
+          <div class="footer-links">
+            <div class="page-tag">
+              {#for tag in page.data.tags.asStrings}
+				  {#let tagSlug = tag.slugify}
+				  <a href="{=site.url('/posts/tag', tagSlug)}" class="tag">&#35; {=tagSlug}</a>
+              {/for}
+            </div>
+            <div class="page-share">
+              <div class="page-share-links">
+                <a href="https://x.com/intent/post?text={=page.title}&url={=page.url.encoded}" title="Share on X" aria-label="Share on X" rel="nofollow noopener noreferrer" target="_blank"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={=page.url.encoded}" title="Share on Facebook" aria-label="Share on Facebook" rel="nofollow noopener noreferrer" target="_blank"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
+                <a href="https://mastodon.social/share?text={=page.title}%0A{=page.url.encoded}" title="Share on Mastodon" aria-label="Share on Mastodon" rel="nofollow noopener noreferrer" target="_blank"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a>
+                <a href="https://www.reddit.com/submit?url={=page.url.encoded}&title={=page.title}" title="Share on Reddit" aria-label="Share on Reddit" rel="nofollow noopener noreferrer" target="_blank"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="page-comments" aria-label="Komentarze"></section>
+      </div>
+    </section>
+  </section>
+  {#insert article-end /}
+</article>
+
+{#insert after-article /}

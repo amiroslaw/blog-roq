@@ -1,0 +1,190 @@
+---
+title: Programy na linuksa
+description: Jak szukać zamienników programów napisanych na Linuksa wraz z moimi rekomendacjami.
+date: 2020-02-28
+image: looking-at-board-small.avif
+slug: programy-na-linuksa
+author: miro
+category: Programs
+tags:
+  - App
+  - Tutorial
+  - Linux
+  - Tips
+content-toc: true
+content-toc-title: Spis
+---
+
+:figure-caption: Img.
+
+== Wstęp
+
+Dla osoby zaczynającej przygodę z systemami GNU/Linux początek może być bardzo frustrujący z uwagi na brak wsparcia programów, z którymi się zapoznaliśmy używając Windowsa. Często osoba w takiej sytuacji narzeka na niedobór oprogramowania lub w najgorszym przypadku próbuje instalować swoje ulubione programy przez Wine. Rozwiązaniem sytuacji powinno być przede wszystkim szukanie programów napisanych natywne pod Linuksa. Może to zająć trochę czasu, dlatego powstał ten post. Mam nadzieję, że osoby używające pingwina codziennie, znajdą też coś ciekawego lub podzielą się w komentarzu własnymi propozycjami.
+
+== Jak szukać programów?
+
+image:ask-blackboard-chalk-board-356079-300x182.avif[question_makr, role=left]
+Moja propozycja programów jest tylko małym wycinkiem dostępnego oprogramowania na Linuksy. Różne dystrybucje podchodzą do tego inaczej, więc należy się zapoznać jak instalować paczki z programami. Najprostszym sposobem do zainstalowania programu jest otworzenie odpowiednika Windowsowskiego sklepu, w Linux Mint jest to menedżer oprogramowania. W systemach pochodnych do debiana operację taką wykonamy też w terminalu:
+
+[source,bash]
+----
+apt-cache search wyszukiwany_program
+sudo apt-get install nazwa_paczki
+----
+
+Alternatywami menedżera oprogramowania i apt jest Synaptic i aptitude z łatwiejszymi do zapamiętania poleceniami. Czasami jednak trzeba je zainstalować.
+
+.Synaptic
+image::synatpic-768x537.avif[Synaptic]
+
+Jak nie znajdziemy nic co nas interesuje w repozytorium lub nie wiemy jak nazywa się program, możemy zajrzeć na stronę https://alternativeto.net/platform/linux/[alternativeTO]. Portal ten posiada zbiór rekomendowanych aplikacji. Możemy wpisać nazwę programu, który znamy z Windowsa i przefiltrować wyniki po platformie Linux. Na oficjalnej stronie wybranego projektu powinniśmy mieć instrukcję instalacji na nasz system. W Ubuntu i Mint będzie to pobranie paczki z rozszerzeniem .deb lub dodanie jego do repozytorium przez PPA. W najgorszym przypadku będziemy musieli pobrać kod programu i go skompilować.
+
+Chciałbym wspomnieć, też o nowych technologiach, które mają na celu uprościć instalację oprogramowanie nie patrząc na jakiej dystrybucji pracujemy. https://appimage.org/[AppImage] jest chyba najprostszym sposobem, aby to osiągnąć. https://flatpak.org/[Flatpak] i https://snapcraft.io/store[Snap] posiadają własne centra.
+
+== Lista aplikacji
+
+Poniższa lista zawiera w dużej mierze programy, z których korzystam lub korzystałem. Unikałem aplikacji napisanych w Qt, aby nie pobierać za dużo paczek, pomaga to też, aby system wyglądał spójnie. Nie ukrywam, że część aplikacji jest minimalistyczna. Dodałem także programy bardzo stare, które nie są już wspierane, jednak działają dobrze, a jak coś działa to po co to zmieniać. 😉 +
+Zamierzam w przyszłości opublikować post z listą programów działających w konsoli (CLI), dlatego nie chcę się powielać i nie zamieściłem ich tutaj. W podpunktach zawarłem alternatywy do proponowanego programu.
+
+* https://mega.nz/[Megasync] Synchronizacja plików z chmury Mega. Usługa ta daje nam 50 GB miejsca na nasze pliki.
+** Dropbox → Popularna alternatywa, oferująca jednak mniej darmowej przestrzeni.
+* https://apps.ankiweb.net/[anki] → Program do nauki, głównie wykorzystywany do zapamiętania słówek z obcego języka. Pakiety słówek można pobierać ze strony projektu. Jest dostępna wersja na androida - AnkiDroid.
+* https://www.pidgin.im/[pidgin] → Komunikator internetowy, pozwalający na łączenie się z różnymi protokołami np. IRC, Skype, Facebook. Dostępna jest, też wersja konsolowa.
+* https://www.qbittorrent.org/[qBittorrent] → Klient torrent.
+** Transmission
+* http://www.retroarch.com/[retroarch] → Emulator systemów, umożliwiających granie w gry z takich konsol jak GameBoy, Atari, NES.
+* https://keepassxc.org[KeePassXC] → Manager haseł, dostępne są wersje na androida (Keepass2Android) i terminala ) i CLI.
+* https://doublecmd.sourceforge.io/index.php?lang=eng[Double Commander] → Manager plików dwu panelowy jak Total Commander.
+** krusader → Wersja KDE.
+** Vifm → Wersja działająca w terminalu.
+
+=== Przeglądarki internetowe
+
+* https://vivaldi.com/?lang=pl_PL[Vivaldi] → Posiada dużo funkcji i udogodnień. Oparta na silniku z Chrome, wspiera także jej rozszerzenia. Trochę dużo zajmuje pamięci operacyjnej.
+* Firefox → Od wersji Quantum stała się bardzo lekka i o wiele lepiej działa.
+* https://qutebrowser.org/[qutebrowser] → Lekka przeglądarka wspierająca nawigację z vim.
+* Chrome i Chromium
+* https://www.falkon.org/[Falkon] → Dawna qupzilla, jeszcze w wersji beta. Napisana w technologii QT.
+
+=== Multimedia
+
+* https://kodi.tv/[Kodi] → Centrum multimedialne.
+* http://store.steampowered.com/[Steam] → Cyfrowy sklep z grami komputerowymi.
+* https://www.clementine-player.org/[Clementine] → Odtwarzacz muzyki, potrafiący też odtwarzać radia internetowe.
+** Amarok
+** Ario - Klient dla MPD.
+** http://anoise.tuxfamily.org/[Ambient Noise Player] → Odtwarza dźwięki relaksacyjne jak deszcz, las.
+* https://gpodder.github.io/[gPodder] → Manager podcastów, posiadający wersję webową gpodder.net i na androida.
+** https://github.com/alatiera/hammond[Hammond]
+* https://github.com/haecker-felix/gradio[Gradio] → Radio internetowe.
+** Goodvibes
+* http://www.smplayer.info/pl/info[SMplayer] → Odtwarzacz wideo.
+** VLC
+* http://qwinff.github.io/[QWinFF] → Nakładka na świetny program ffmpeg do nagrywania, konwertowania audio/wideo.
+** HandBrake → Konwerter wideo.
+** http://vidcutter.ozmartians.com/[VidCutter] → Wycinanie i scalanie fragmentów wideo.
+* http://qnapi.github.io/[qnapi] → Program do pobierania napisów filmowych.
+
+=== Grafika
+
+* https://www.gimp.org/[Gimp] → Edytor grafiki.
+* http://www.xnview.com/en/xnviewmp/#features[xnview] → Przeglądarka i konwersją zdjęć.
+** http://karlch.github.io/vimiv/[vimiv] → Lekka przeglądarka zdjęć ze skrótami jak w vimie.
+** sxiv
+** Viewnior
+* https://www.darktable.org/[Darktable] → Obróbka zdjęć (jak Lightroom).
+** RawTherapee
+** digiKam
+** LightZone
+** Photivo
+
+=== Programy biurwe
+
+* https://www.libreoffice.org/[LibreOffice] → Pakiet biurowy.
+** WPS Office
+** AbiWord → Lekki edytor tekstu.
+* https://www.mozilla.org/thunderbird[Thunderbird] → Klient pocztowy.
+** Claws Mail
+** Geary
+* http://goldendict.org/[GoldenDict] → Słownik
+** StarDict → Już nie wspierany.
+* https://www.gnucash.org/[GnuCash] → Zarządzanie budżetem domowym i małych firm. Zgodny z regułą podwójnego zapisu.
+** Eqonomize
+** Homebank
+* https://calibre-ebook.com/[calibre - E-book management] → Manager e-booków, w pakiecie jest zawarta przeglądarka książek elektronicznych.
+** https://github.com/oguzhaninan/Buka[buka ebook reader]
+* https://www.freeplane.org/wiki/index.php/Home[Freeplane] → Tworzenia map myśli.
+** http://www.xmind.net/[xmind]
+** freemind
+* https://pwmt.org/projects/zathura/[zathura i mupdf] → Lekka przeglądarka PDF.
+** https://okular.kde.org/[Okular] → Wersja KDE.
+* http://www.pdfsam.org/[PDFsam] → Program do modyfikowania plików PDF
+** PDFMod
+** http://xournal.sourceforge.net/[Xournal] → Notatki i adnotacje PDF.
+* https://typora.io/[Typora] → Tworzenie i podgląd notatek zapisanych w formacie Markdown.
+** Boostnote
+** Simplenote
+** http://remarkableapp.github.io/linux.html[Remarkable]
+
+=== Narzędzia systemowe
+
+* http://tilda.sourceforge.net/[tilda] → Drop-down terminal.
+** Guake terminal
+** yakuake → Wersja dla KDE.
+* https://github.com/alacritty/alacritty[alacritty]
+** kitty
+** https://github.com/thestinger/termite/[termite] → Posiada tryby jak w vim, ale już nie jest wspierany.
+** http://www.ubuntu-pomoc.org/terminology-wiecej-niz-kolejny-emulator-terminala/[terminology] → Rozbudowany terminal z wieloma funkcjami.
+** st → Bardzo lekki terminal.
+* http://en.congelli.eu/prog_info_lcdnurse.html[LCD Nurse] → Szukanie martwych pikseli w monitorach LCD.
+* https://dave-theunsub.github.io/clamtk/[ClamTK] → Antywirus
+* http://www.pixelbeat.org/fslint/[fslint] → Narzędzie do szukania duplikatów, pustych folderów itp.
+* http://pl.wikibooks.org/wiki/Ubuntu/Program_antywirusowy[ClamTK] ClamAV → nakładka gui na antywirus
+* kazam → Nagrywanie pulpitu.
+* https://davedavenport.github.io/rofi/[rofi] → Program do przełączania i uruchamiania aplikacji jak dmenu.
+** https://kupferlauncher.github.io/[kupfer]
+* https://github.com/wummel/patool[patool] → Manager do archiwizacji i kompresji danych. Wspiera dużą ilość rozszerzeń.
+** atool
+** 7zip
+* https://github.com/DoTheEvo/ANGRYsearch[ANGRYsearch] → Wyszukiwarka plików.
+** http://www.lesbonscomptes.com/recoll/[recoll]
+* https://unetbootin.github.io/[UNetbootin] → Tworzenie USB boot.
+* https://github.com/oguzhaninan/Stacer[Stacer] → Optymalizacja systemu.
+* http://shutter-project.org/[Shutter] → Tworzenie zrzutów ekranu.
+* https://sourceforge.net/projects/linssid/[linssid] → Skanowanie sieci bezprzewodowych.
+* https://www.bleachbit.org/[bleachbit] → Czyszczenie systemu z niepotrzebnych plików.
+* Unclutter → Ukrywanie wskaźnika myszy w czasie spoczynku.
+* Hardinfo → Informacje o sprzęcie i systemie.
+** lshw → info o systemie można zainstalować nakładkę GUI.
+* http://www.nongnu.org/synaptic/[Synaptic] → Manager pakietów.
+* http://meldmerge.org/[meld] → Porównywanie plików tekstowych w poszukiwaniu różnic.
+* https://wiki.gnome.org/Apps/Brasero[brasero] → Nagrywarka płyt.
+** https://sourceforge.net/projects/acetoneiso/[AcetoneISO] → Tworzenie plików ISO.
+** Furiusisomount
+
+=== Ergonomia
+
+* https://github.com/thjaeger/easystroke/wiki[EasyStroke] → Program umożliwia mapowanie gestów myszki z skrótami klawiaturowymi lub poleceniami konsolowymi. Nie jest już wspierany, ale nadal prawidłowo działa.
+* http://www.workrave.org/[Workrave] → Program mówiący kiedy mamy zrobić sobie przerwę od komputera.
+** https://projecthamster.wordpress.com/about/[Hamster] → Monitorowanie czasu.
+* http://jonls.dk/redshift[redshift] → Aplikacja starająca się ograniczyć niebieskie światło od monitora.
+** f.lux
+* http://hluk.github.io/CopyQ/[CopyQ] → Manager schowka systemowego.
+** cliplt
+
+=== Narzędzia developerskie
+
+* http://www.eclipse.org/downloads/eclipse-packages/[Eclipse] → Środowisko programistyczne do min. Java, PHP, C, C++.
+** IntelliJ IDEA:
+** http://www.codeblocks.org/[code blocks]
+** https://code.visualstudio.com/[visual studio code]
+** atom
+** brackets
+* https://zealdocs.org/[zeal] → Dokumentacja offline.
+* https://filezilla-project.org/[filezilla] → Klient FTP.
+* http://dbeaver.jkiss.org/[dbeaver] → Uniwersalny klient do zarządzania bazami danymi.
+** mysql workbench
+** DbVisualizer
+* https://git-scm.com/[git] → Manager kontroli wersji.
+** kraken
+** smartgit

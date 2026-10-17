@@ -1,0 +1,248 @@
+---
+title: Espanso - text expander
+description: Espanso jest programem do tworzenia snippetów. Dzięki niemu możemy poprawić naszą pracę w przypadkach, gdy często musimy pisać podobne lub takie same fragmenty. Jeśli męczy Cię ciągłe wpisywanie tych samych formułek w listach elektronicznych lub podawanie swojego e-maila, adresu lub nr. telefonu, to warto go wyprobować.
+date: 2022-02-11
+image: typing-small.avif
+slug: espanso
+author: miro
+category: Programs
+tags:
+  - App
+  - Productivity
+  - Linux
+content-toc: true
+content-toc-title: Spis
+---
+
+:figure-caption: Img.
+
+.Informacje o programie
+|===
+| Strona projektu | System | Język  | Kategoria
+| https://espanso.org/[espanso] | Linux, Windows, MacOS | rust, C++  | link:/posts/tag/Produktywno[produktywność]
+|===
+
+image:icon.avif[espanso,role=right img-25]
+Espanso jest programem do tworzenia snippetów, czyli skrótów, które generują tekst z szablonu. Dzięki niemu możemy poprawić naszą pracę w przypadkach, gdy często musimy pisać podobne lub takie same fragmenty. Przydatny szczególnie w takich sytuacjach jak programowanie, pisanie tekstu przypominającego strukturę formularza. Jeśli męczy Cię ciągłe wpisywanie tych samych formułek w listach elektronicznych lub podawanie swojego e-maila, adresu lub nr. telefonu, to warto go wyprobować. Program jest lekki i nie zajmuje dużo pamięci operacyjnej po uruchomieniu. Najważniejsze co można podkreślić w to, to że program jest dostępny dla każdej platformy oraz można go używać z innymi aplikacjami. Poniżej zamieszczam inne funkcjonalności:
+
+- posiada interfejs graficzny
+- wspiera emoji i daty
+- można rozszerzać użyteczność przez paczki tworzone przez społeczność
+- szablony wspierają skrypty
+- zaawansowane formularze
+
+Program jest dostępny w AUR. Po zainstalowaniu należy raz zarejestrować go jako serwis, aby uruchamiał się przy starcie programu.
+
+.Uruchamianie programu
+[source,bash]
+----
+espanso service register
+
+espanso start
+----
+
+== Używanie
+Koncepcja tego typu programów jest prosta. Tworzymy tekst, który będzie się automatycznie wklejać po wpisaniu określonej z góry frazy.
+
+Czasami będziemy chcieli napisać coś, co jest naszą frazą w Espanso, aby powstrzymać program od nadpisywania, należy użyć kbd:[Backspace], lub tymczasowo go wyłączyć przez dwukrotne naciśnięcie kbd:[Alt].
+
+.Wyszukiwarka
+image::espanso-search.avif[espanso wyszukiwarka,500]
+Espanso posiada prostą wyszukiwarkę naszych skrótów, którą zobaczymy po wciśnięciu na klawiaturze kbd:[Alt + Space]. Skróty jak i inne ustawienia można zmienić w pliku `~/.config/espanso/config/default.yml`.
+
+== Konfiguracja
+
+WARNING: Konfiguracja jest oparta na wersji 2.0.0, która jest jeszcze w wersji __alpha__. Dokumentację do obu wersji można zobaczyć na https://espanso.org/docs/get-started/[tej stronie.]
+
+IMPORTANT: Przed eksperymentowaniem z konfiguracją wykonaj kopię zapasową katalogu `~/.config/espanso`.
+
+Szablony można umieszczać w pliku yaml `~/.config/espanso/match/base.yml` lub w pliku w tym samym katalogu.
+
+Najprostsze użycie to zwykłe zastępowanie skrótu z tekstem ma postać pary `trigger`, `replace`. W prosty sposób można uniknąć popularnych literówek.
+
+[source,yaml]
+----
+matches:
+  - trigger: "napewno"
+    replace: na pewno
+  - trigger: "ciebie"
+    replace: Ciebie
+----
+
+Pierwsza uwaga to formatowanie tekstu, jeśli chcemy wkleić tekst z uwzględnieniem nowych linii, to musimy dodać znak `|`, natomiast użyli znak większości `>`, to tekst wyświetliłby się w jednej linii. Dobrym pomysłem jest podanie dwukropku (`:`) przed frazą, tak abyśmy rzadziej omylnie aktywowali program. Jest możliwość dodania kilku triggerów np. `- trigger: [":sig", ":signature"]`.
+
+[source,yaml]
+----
+- trigger: [":sig", ":signature"]
+replace: |
+  Z poważaniem
+  Arkadiusz Mirosław
+----
+
+Przy ustawieniu `propagate_case` jesteśmy w stanie zmieniać wielkość liter w zastępowanym tekście. Przykładowo:
+
+Wpisując err dostaniemy error.
+Wpisując Err dostaniemy Error.
+Wpisując ERR dostaniemy ERROR.
+
+[source,yaml]
+----
+  - trigger: "err"
+    replace: "error"
+    propagate_case: true
+----
+
+Jesteśmy w stanie ustawić kursor w miejscu którym chcemy, przez dodanie znaków `$|$`. Bardzo przydatne przy pisaniu kodu i tagów HTML.
+
+.Znak stopu
+[source,yaml]
+----
+  - trigger: ":div"
+    replace: "<div>$|$</div>"
+----
+
+Jeśli używamy program który umożliwia wklejanie obrazków, to zamiast tekstu możemy podać ścieżkę do pliku, który chcemy wkleić.
+
+.Obrazki
+[source,yaml]
+----
+  - trigger: ":img"
+    image_path: "/home/miro/Pictures/01-02-142537_sc.png"
+----
+
+Jeśli mamy szablony, które mają tekst wspólny to przez zmienne globalne możemy podstawiać je w naszym tekście przez znaki `{{}}`. W przykładzie po wpisaniu `:jon` dostaniemy `jon@gmail.com`.
+
+.Globalne zmienne
+[source,yaml]
+----
+global_vars:
+  - name: "gmail"
+    type: "dummy"
+    params:
+      echo: "@gmail.com"
+
+matches:
+  - trigger: ":jon"
+    replace: "jon{{gmail}}"
+----
+
+Espanso posiada wbudowane zmienne dotyczące formatowania daty. Przy pomocy skrótowi `:now` dostaniemy aktualną godzinę.
+
+.Data
+[source,yaml]
+----
+  - trigger: ":now"
+    replace: "{{now}}"
+    vars:
+      - name: now
+        type: date
+        params:
+          format: "%H:%M"
+----
+
+Nie jesteśmy skazani na sztywne szablony, do naszej dyspozycji jest schowek systemowy oraz polecenie powłoki shell. W pierwszym przykładzie skopiowany link zostanie dodany do atrybutu href oraz kursor zostanie przeniesiony do wnętrza tagu a. Drugi przykład to wydobycie lokalnego adresu IP, dzięki Linuksowym narzędziom systemowym.
+
+.Clipboard
+[source,yaml]
+----
+  - trigger: ":a"
+    replace: "<a href='{{clipboard}}' />$|$</a>"
+    vars:
+      - name: "clipboard"
+        type: "clipboard"
+----
+
+.Polecenie bash
+[source,yaml]
+----
+  - trigger: ":localip"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "ip a | grep 'inet 192' | awk '{ print $2 }'"
+----
+
+Espanso nie ogranicza się do wywoływanie poleceń systemowych, ale to możemy podać skrypt do każdego języka dynamicznego, który mamy zainstalowany. W tym przypadku należy podać ścieżkę do pliku wykonywalnego. Każdy tekst, który będzie wygenerowany i wysłany na standardowe wyjście, będzie wklejane przez nasz skrót. W mojej konfiguracji użyłem języka Lua, którego polecam w takich sytuacjach.
+
+.Skrypt
+[source,yaml]
+----
+  - trigger: ":lua"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: script
+        params:
+          args:
+            - lua
+            - "path_to_file/test.lua"
+----
+
+== Formularze
+Jednym z minusów w poprzednich metodach jest to, że możemy ustawić kursor w jedno miejsce. Ogranicza nas, to gdy mamy kilka miejsc, w których chcemy dopisać nasz opcjonalny tekst, np. kilka znaczników HTML. Obejściem na to są formularze. Dzięki temu, że espanso przy tej metodzie generuje interfejs graficzny, możemy zbudować skomplikowany formularz oparty kontrolkach:
+
+- Input text
+- Multiline text field
+- Choice box
+- List box
+
+Należy zauważyć, że pole tekstowe dla jednej linii nie musi być zadeklarowane w obiekcie `form_fields`.
+
+.Formularz - szablon
+[source,yaml]
+----
+  - trigger: ":zamówienie"
+    form: |
+      Klient [[imię]],
+      [[adres]]
+      Zamówił:
+      [[produkt]] w kolorze [[kolor]]
+    form_fields:
+      produkt:
+        type: list
+        values:
+          - koszulka
+          - spodnie
+      kolor:
+        type: choice
+        values:
+          - niebieski
+          - czerwony
+      text:
+        multiline: true
+----
+
+.Wygląd formularza
+image::form.avif[Formularz]
+
+== Rozszerzenia
+Dużym plusem espanso jest posiadanie rozszerzeń, które są tworzone przy współpracy społeczeństwa. Pod tym adresem możne zobaczyć https://hub.espanso.org/[listę wtyczek].
+
+.Instalacja wtyczki
+[source,bash]
+----
+espanso install nazwa_rozszerzenie
+----
+
+Niestety po instalacji trzeba zrestartować program, aby rozszerzenie było dostępne, poprzez polecenie:
+
+[source,bash]
+----
+espanso restart
+----
+
+Wybrałem przykładowe rozszerzenia, które są ciekawe.
+
+- https://hub.espanso.org/packages/cht/[cht] - popularny cheat sheat z strony https://cht.sh[cht.sh].
+- https://hub.espanso.org/packages/basic-emojis/[emoji] - lista znaków emoji. Dostępna jest paczka z większą ich ilością.
+- https://hub.espanso.org/packages/mispell-en/[misspell] - predefiniowana lista angielskich literówek.
+
+== Alternatywy
+Będąc szczerym sam nie używam Espanso, ponieważ wolałbym program z autouzupełnianiem, który wspiera słowniki. Typing Assistant byłby idealny dla mnie, jednak jest on dostępny tylko dla systemu Windows.
+
+- https://github.com/autokey/autokey[autokey]
+- https://gitlab.com/bharadwaj-raju/TextSuggest[TextSuggest]
+- https://github.com/leehblue/texpander[texpander]
+- https://www.sumitsoft.com/index.htm[Typing Assistant]

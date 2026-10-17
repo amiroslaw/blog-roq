@@ -1,0 +1,28 @@
+---
+layout: page
+title: Kategorie
+description: Wpisy pogrupowane według kategorii i ich tagi.
+---
+
+<div class="categories">
+{#for entry in site.collections.get('posts').group('category')}
+  <section class="category-group" id="{=entry.key}">
+    <h2>{=entry.key} <span class="category-count">{=entry.value.size}</span></h2>
+    <ul class="category-posts">
+      {#for post in entry.value}
+      <li>
+        <a href="{=post.url}">{=post.title}</a>
+        <time datetime="{=post.date.isoDate}">{=post.date.format('yyyy-MM-dd')}</time>
+      </li>
+      {/for}
+    </ul>
+  </section>
+{/for}
+</div>
+
+<h2>Tagi</h2>
+<ul class="tags">
+  {#for entry in site.tags}
+  <li><a href="/posts/tag/{=entry.key}">{=entry.key}</a></li>
+  {/for}
+</ul>

@@ -1,0 +1,71 @@
+---
+layout: page
+title: Portfolio
+description: Wybrane projekty i aplikacje, które stworzyłem.
+bodyClass: portfolio-page
+page-class: page-wide
+---
+
+<div class="portfolio-grid">
+{#for item in cdi:portfolio.items}
+{#if item.type is 'link'}
+  <a class="portfolio-card" href="{=item.link}" target="_blank" rel="noopener noreferrer">
+    <figure class="portfolio-thumb">
+      <img src="{=site.image(item.image)}" alt="{=item.title}" loading="lazy">
+    </figure>
+    <div class="portfolio-card-body">
+      <h3>{=item.title}</h3>
+      <p>{=item.caption}</p>
+    </div>
+  </a>
+{#else}
+  <button type="button" class="portfolio-card" data-dialog="portfolio-{=item_index}">
+    <figure class="portfolio-thumb">
+      <img src="{=site.image(item.image)}" alt="{=item.title}" loading="lazy">
+    </figure>
+    <div class="portfolio-card-body">
+      <h3>{=item.title}</h3>
+      <p>{=item.caption}</p>
+    </div>
+  </button>
+{/if}
+{/for}
+</div>
+
+{#for item in cdi:portfolio.items}
+{#if item.type is 'modal'}
+<dialog id="portfolio-{=item_index}" class="portfolio-dialog">
+  <button type="button" class="portfolio-dialog-close" data-close aria-label="Zamknij">&times;</button>
+  <div class="portfolio-dialog-body">
+    <h3>{=item.title}</h3>
+    <p class="portfolio-dialog-caption">{=item.caption}</p>
+    {#if item.image}
+    <img class="portfolio-dialog-image" src="{=site.image(item.image)}" alt="{=item.title}">
+    {/if}
+    {#if item.get('description')}
+    <p>{=item.get('description')}</p>
+    {/if}
+    {#if item.get('features')}
+    <h4>Funkcje</h4>
+    <ul class="portfolio-features">
+      {#for feature in item.get('features')}<li>{=feature}</li>{/for}
+    </ul>
+    {/if}
+    {#if item.get('screenshots')}
+    <h4>Zrzuty ekranu</h4>
+    <div class="portfolio-screenshots">
+      {#for screenshot in item.get('screenshots')}<img src="{=site.image(screenshot)}" alt="{=item.title}" loading="lazy">{/for}
+    </div>
+    {/if}
+    {#if item.get('technology')}
+    <h4>Technologie</h4>
+    <p>{=item.get('technology')}</p>
+    {/if}
+    <div class="portfolio-links">
+      {#if item.get('repository')}<a class="btn btn-secondary" href="{=item.get('repository')}" target="_blank" rel="noopener noreferrer">Repozytorium</a>{/if}
+      {#if item.get('project')}<a class="btn btn-secondary" href="{=item.get('project')}" target="_blank" rel="noopener noreferrer">Projekt</a>{/if}
+    </div>
+  </div>
+</dialog>
+{/if}
+{/for}

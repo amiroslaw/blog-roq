@@ -1,0 +1,186 @@
+---
+title: Filozofia Vima - edycja
+description: Druga część dotycząca podstaw w używaniu edytora tekstowego Vim. W tej części nauczymy się jak się poruszać i edytować plik tekstowy.
+date: 2020-05-30
+image: vim-logo-small.avif
+slug: filozofia-vima-edycja
+series: Filozofia Vima
+author: miro
+category: Vim
+tags:
+  - Vim
+  - Tutorial
+  - Linux
+content-toc: true
+content-toc-title: Spis
+---
+
+:figure-caption: Img.
+
+Jest to druga część dotycząca podstaw w używaniu edytora tekstowego Vim. Pierwszą opisującą tryby i zarządzanie plikami można przeczytać link:/posts/filozofia-vima-tryby-i-pliki/[tutaj].
+
+Najistotniejsze co trzeba zrozumieć w używaniu Vima jest to, że zachowuje się on jak język programowania. 😊
+
+Edytowanie i poruszanie oparte jest na komendach (commands), które operują na obiektach (text objects) lub określonym ruchu (motions). Dodatkowo taki zestaw możemy poprzedzić ilością powtórzeń. Ważne do zaznaczenie jest to, że wszystkie wymienione wcześniej funkcje są odseparowane od siebie.
+
+== Poruszanie
+
+Dużą zaletą Vima jest mnogość operacji pozwalających na efektywne przemieszczenie kursora. Możemy zapomnieć o używaniu myszki i syndromie RSI. Poniższe skróty działają w normalnym trybie.
+
+* `h`, `j`, `k`, `l` - klawisze te poruszają kursorem tak jak odpowiednio strzałki: lewo, dół, góra, prawo
+* `w`, `e`, `b` - przejście do początku `w`, końca następnego wyrazu `e` albo do poprzedniego wyrazu `b`
+* `W`, `E`, `B` - odpowiedniki powyższych skrótów, jednak tym razem wyraz ignorujemy znaki przestankowe. Przykładowo tekst div.nav i text-align będą traktowane jako jeden wyraz
+* `(`,`)`; `{`,`}` - przejście na początek i koniec zdania `()` albo akapitu `{}`
+* `0`,`$` - skok na początek i koniec linii
+* `I`,`A` - skok na początek i koniec linii i przejście w tryb Insert
+* `H`, `M`, `L` - skok kursora na górę, środek lub dół ekranu
+* `zz`, `zt`, `zb` - wycentrowanie `zz` tekstu na linii gdzie znajduje się kursor. Przesunięcie ekranu tak, aby kursor znajdował się na górze `zt` lub dole `zb` ekranu
+* `c-b`, `c-f` - przesunięcie ekranu do góry i dołu,
+* `c-u`, `c-d` - przesunięcie tylko połowy ekranu do góry i dołu
+
+Prawie wszystkie powyższe skróty można poprzedzić liczbą i tak np. `4l` przesunie kursor o cztery znaki w prawo, a `2k` o dwie linie do góry. Jak chcemy skoczyć do konkretnej linii, to możemy użyć `gg` lub `G`, poprzedzając je numerem linii. Skok do linii numer 3 wykonamy przez `3gg`. Istnieją aliasy to przechodzenia na początek i koniec dokumentu, są to odpowiednio `gg` i `G`, tylko bez liczb.
+
+=== Wyszukiwanie
+
+Upraszczając do celów edukacyjnych, zebrałem trzy metody przeskakiwania kursora do wyszukiwanego tekstu lub znaku.
+
+* `\#`, `\*` - przechodzenie do następnego `*` lub poprzedniego `#` wyrazu, który znajduję się pod kursorem
+* `%` - szuka brakującego nawiasu: (,),[,],\{, lub }. Przenosi do miejsca, w którym występuje zamykający/otwierający nawias
+* `f{znak}`, `F{znak}` - skok do pierwszego następnego `f` lub poprzedniego `F` wyszukiwanego znaku. Możemy powtarzać ten sam skok poprzez `;` lub powracając `,` do poprzedniego znaku.
+* `/{fraza}` lub `?{fraza}` - wyszukuje następnej `/` lub poprzedniej `?` frazy w pliku
+
+Dobrze wiedzieć, że w ostatni sposobie możemy użyć wyrażeń regularnych na przykład `/nazw.\|login`, może uwzględnić nam wyrazy jak: nazwa, nazwy lub login. Bardziej przydatne wyrażenia to:
+
+* `.` - dowolny znak
+* `^`, `$` - początek i koniec linii
+* `\<`, `\>` - początek i koniec słowa np. `\<surykatka\>` wyszuka tylko wyraz surykatka
+
+W czasie wyszukiwania możemy skakać pomiędzy znalezionymi frazami, i tak `n` znajduje nam następne wystąpienie, a `N` poprzednie. Jak chcemy przeskoczyć kilka trafień musimy poprzedzić komendę liczbą np. `10n`.
+
+== Komendy
+
+Jak do tej pory nauczyliśmy się skakać po dokumencie, co nie jest zbytnio produktywne. 😉 Komendy (commands) służą nam do edytowania dokumentu, do podstawowych operacji należą:
+
+* `y`, `yy` (yank) - kopiowanie tekstu lub całej linii `yy`
+* `d`, `dd` (delete) - usunięcie (wycinanie) zaznaczonego tekstu `d` lub całej linii `dd`
+* `c`, `cc` (change) - zmienianie tekstu, komenda ta wycina znaki i przechodzi do Insert mode. Polecenie `cc` zmienia całą linię.
+* `p`, `p` (paste) - wklejanie tekstu po kursorze `p` lub przed `p`
+* `gu`, `gu` - opcja dodana trochę na siłę mająca na celu podmianę wyrazów na duże `gu` lub małe `gu` litery
+* `>`, `>>` - zrobienie wcięcia jednej linii `>>` lub kilku `>`, przy dodaniu parametru ruchu
+
+Gratuluję wytrwałości, jak dotrwałeś do tego miejsca. Mam dobrą wiadomość, jakbyś miał mętlik w głowie od wszystkich poznanych skrótów. Z powyższymi funkcjami możesz wykonać większość operacji na tekście. Vim idzie dalej, umożliwiając nam bardziej ergonomiczne jego manipulowanie. Często takimi ułatwieniami są aliasy do podstawowych skrótów (te będą podane w nawiasach).
+
+* `x` (`dl`), `X` (`dh`) - wycinanie znaku spod kursora `x` lub jeden znak wcześniej `X` - duże x
+* `d` (`d$`) - wycinanie tekstu od miejsca, gdzie znajduje się kursor do końca linii
+* `y` (`y$`) - kopiowanie naisu od miejsca, gdzie znajduje się kursor do końca linii
+* `C` (`c$`) - zmiana tekstu od miejsca, gdzie znajduje się kursor do końca linii
+* `s` (`cl`), `S` (`cc`) - zmienianie tekstu, komenda ta wycina znak spod kursora i przechodzi do Insert mode. Polecenie `S` zmienia całą linie.
+* `~` (`gUl` i `gul`) - (tylda) zamiana wielkości znaku spod kursora
+* `r{x}` - działa jak `cl`, jednak pozostaje w Normal mode. Zamienia znak na pozycji kursora na wybrany znak
+
+image:smart-guy-300x300.avif[smart guy,role=left img-25]
+Jestem Wam winien wyjaśnienie, dlaczego operacje `d` (delete) przetłumaczyłem na wycinanie. Vim domyślnie niczego nie kasuje, komendy takie jak `d`, `c`, `S` przenoszą tekst do rejestru.
+Vim przechowuje historie wyciętego tekstu w rejestrach pod cyframi 1-9. Jeśli usunęliśmy dwa różne stringi i chcemy wkleić ten pierwszy, to musimy wywołać rejestr o cyfrze 2 przez `"2`, aby wkleić dodajemy jeszcze literkę p (paste) - `"2p`. Dodatkowo po kolejnych wyciętych obiektach, tekst przesuwa się do rejestrów o wyższych numeracjach. Następną sprawą jest fakt, iż skopiowany tekst (`y`) posiada specjalny rejestr 0.
+
+Podsumowując, jeśli skopiujemy napis (`y`) i potem przejdziemy w inne miejsce pliku oraz usuniemy inny fragment, to pod klawiszem `p` będzie ten usunięty tekst. Jeśli chcemy wkleić to co kopiowaliśmy, to musimy użyć komendę `"0p`.
+
+=== Cofanie i powtarzanie
+
+Każde polecenie można powtórzyć - robi się to przez `.` kropkę. Oczywiście mamy też możliwość cofnięcia edycji lub wykonania jej ponownie. Nic nie szkodzi nam, aby takie cofnięcia powtarzać kilkukrotnie np. `5u`.
+
+* `u` - cofa skutki ostatniego polecenia
+* `U` - cofa dla całej linii
+* `c-r` - operacja ``wykonaj ponownie'' - cofa cofnięcia
+
+== Obiekty tekstowe
+
+Dobrą praktyką jest, aby podczas edycji dokumentu używać obiektów tekstowych, a nie komend ruchu (motions). Obiektami tymi są m.in. wyraz `w`, zdanie `s`, paragraf `p`, napis zawarty w cudzysłowach `"`, nawiasach `b` lub tagach HTML `t`. Często klawisz odpowiadający za dany ruch jest taki sam w obiektach tekstowych. W takim wypadku różnica polegająca na zaznaczeniu obiektu, to dodanie jednej z dwóch liter:
+
+* `i` - operuje tylko na danym obiekcie
+* `a` - operuje na danym obiekcie wraz ze spacjami poprzedzającymi następny obiekt. Jeśli mamy cudzysłowy lub nawiasy to zaznaczamy je oraz tekst pomiędzy nimi.
+
+Załóżmy, że nasz kursor znajduje się na środku wyrazu i chcielibyśmy go usunąć. Jeśli użyjemy `dw` usuniemy tylko połowę wyrazu (od kursora do następnego słowa). Musimy w takim razie przejść do początku tego wyrazu (przez np.`b`) i dopiero zastosować komendy `dw`. Używając obiektów tekstowych nie musimy być na początku tego obiektu. Następną przewagą w tej metodzie jest zdolność do powtarzania komend, niezależnie od pozycji kursora. Wydaje się to skomplikowane, ale po poniższym przykładzie wszystko stanie się jasne. Pogrubiony znak oznacza pozycję kursora.
+
+[arabic]
+. sury**k**atka → próbujemy usunąć słowo przez `dw`
+. sury → wynikiem jest usunięcie tylko fragmentu wyrazu
+. sury**k**atka → `bdw` musimy przejść na początek wyrazu i dopiero go wyciąć
+. Konst**a**ntynopol → jesteśmy w połowie drugiego słowa, i chcielibyśmy powtórzyć poprzednią komendę przez `.` kropkę
+. Konst → niestety ucinamy tylko fragment od pozycji kursora
+
+Teraz powtórzmy to używając obiektów tekstowych:
+
+[arabic]
+. sury**k**atka → `daw` usuwa całe słowo
+. Konst**a**ntynopol → kropka `.` powtarza nam polecenie ``usuń cały wyraz''
+
+Dodatkowo nie trzeba być na danym obiekcie, aby go edytować. Vim wyszuka pierwsze wystąpienie tego obiektu.
+
+Wyodrębniłbym kilka rodzajów obiektów. W pieszym znajdują się:
+
+* `w` - wyraz
+* `W` - wyrazy połączone znakami przestankowymi
+* `s` - zdanie
+* `p` - paragraf
+* `'`, `"`, ` - tekst pomiędzy cudzysłowami
+
+Napis pomiędzy nawiasami. Obiekty te możemy zaznaczać niezależnie czy użyjemy znaku otwarcia lub zamknięcia nawiasu. Niektóre z nich mają alias:
+
+* `(`, `)` lub `b` - nawias okrągły
+* `{`, `}` lub `B` - nawias wąsaty
+* `[`, `]` - nawias kwadratowy
+* `<`, `>` - nawias ostry
+
+Dla programistów są zdefiniowane obiekty HTML. Znak `t` to tekst pomiędzy tagami, dzięki `>` możemy zmienić sam znacznik (tak jakby to był zwykły nawias ostry) np.: <span>sury**k**atka<span> → `dit` skasuje wyraz ``surykatka''
+
+Dodatkowe obiekty można samemu zdefiniować lub zainstalować odpowiedni https://github.com/kana/vim-textobj-user/wiki[plugin].
+
+== Połączenie poleceń
+
+Tak jak wspominałem do Vima można podejść jak do języka programowania. Prawie wszystkie wcześniej grupy skrótów można ze sobą komponować w jedno polecenie, które ma poniższą strukturę:
+
+{empty}[liczba][komenda][obiekt tekstowy lub ruch]
+
+Składowe tego polecenia są opcjonalne. Nie musimy powtarzać lub manipulować kilkoma obiektami, bez komendy edycyjnej będziemy jedynie poruszać się po dokumencie. W tym momencie można zauważyć, że nie potrzebujemy uczyć się wszystkich skrótów. Kilka poleceń daje nam ogromne możliwości i sposoby manipulacji dokumentem. Oto przykłady:
+
+* `3w` - przejście o 3 wyrazy do przodu
+* `3pb` - skopiowanie 3 poprzednich wyrazów
+* `ci[` - zamiana znaków w nawiasie kwadratowym
+* `2dap` - usunięcie 2 paragrafów
+* `d/{text}` - kasowanie tekstu od kursora do wyszukiwanego wzorca
+* `vfz` - przejście do trybu wizualnego i zaznaczenie tekstu do pierwszego wystąpienia litery `z`
+* `xp` - zamiana miejscami dwóch liter
+* `guH` - zamiana wszystkich liter na małe, od kursora do górnej krawędzi ekranu
+* `dG` - usunięcie wszystkiego od kursora do końca dokumentu
+* `4>j` - wcięcie 4 następnych linii
+* `2.` - dwukrotne powtórzenie ostatniego polecenia
+* `d'a` - dzięki takiej konstrukcji, Vim usuwa wszystko od miejsca zakładki `a` do miejsca, w którym znajduje się kursor
+* `5c-w+` - zwiększenie okna o 5 wierszy
+
+== Porady
+
+Na sam koniec tego wstępu do Vima, mam dla Was kilka porad, które mogą być przydatne. Pierwsza z nich wydaje się być dziwna. Proponuję zamiast Vima zainstalować jego fork https://neovim.io/[NeoVim]. Program ten ma kilka dodatkowych funkcji i wydaje mi się, że jest bardzie, dostosowany do pracy od razu po zainstalowaniu. Mówiąc o ustawieniach, na stronie https://vim-bootstrap.com/[vim-bootstrap] znajdziemy przygotowane pliki konfiguracyjne. Podczas pisania możemy korzystać z auto uzupełniania. Listę słów, które wystąpiły w dokumencie otworzymy przez kbd:[Ctrl+n] lub kbd:[Ctrl+p], skróty te odpowiadają też za ich wybór.
+
+Zachętą do nauki Vima jest fakt, iż w innych programach zaimplementowane są poznane nam skróty. Praktycznie większość popularnych IDE ma wtyczkę, która umożliwi nam operowaniem tekstem w ten sam sposób jak w Vime. W powłokach systemowych bash i zsh jest możliwość włączenia `Vi mode`. https://github.com/brookhong/Surfingkeys[Surfingkeys] to jedno z rozszerzeń do Firefox i przeglądarek bazujących na Chromium, które pozwalają nawigować po stronach internetowych. Niektóre aplikacje, zorientowane na produktywność pozwalają na łatwą zamianę lub wspierają, skróty podobne do tych z Vima.
+
+.VimVi przeglądarka zdjęć
+image::vimiv.avif[vimiv,role=right]
+
+- https://vifm.info/[vifm] i https://ranger.github.io/[ranger] → Przeglądarki plików
+- https://github.com/thestinger/termite/[termite] → Terminal linuksowy, który posiada tryby jak w Vim.
+- http://karlch.github.io/vimiv/[vimiv], feh i sxiv → Lekkie przeglądarki zdjęć
+- https://cmus.github.io/[cmus] i https://kimtore.no/pms/[PMS] → Odtwarzacze muzyczne
+- https://pwmt.org/projects/zathura/[zathura] i http://naihe2010.github.io/apvlv/[apvlv] → Przeglądarki pdf
+- https://i3wm.org/[i3wm] → Window manager
+- https://tamlok.github.io/vnote/[VNote] → Aplikacja do robienia notatek w Markdown
+- http://www.mutt.org/[mutt] → Klient e-mail
+- https://code.meskio.net/tudu/[TuDu] → Lista zadań w terminalu
+- https://qutebrowser.org/[qutebrowser] → Lekka przeglądarka internetowa
+- https://github.com/seanyeh/vibreoffice[vibreoffice] → Plugin do LibreOffice i OpenOffice
+- https://skyfromme.wordpress.com/2015/04/06/easterhegg-vimpressing-libreoffice/[Vimpressing] → Tworzenie prezentacji w Vim
+- http://www.viemu.com/[viemu] - emulatora Vima
+
+Poniżej zamieszczam przydatną grafikę z skrótami klawiaturowymi.
+
+.Vim cheat sheet
+image::vi-vim-cheat-sheet.gif[cheat sheet]
