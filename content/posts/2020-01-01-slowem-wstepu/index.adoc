@@ -7,7 +7,7 @@ slug: slowem-wstepu
 author: miro
 category: Blog
 tags:
-  - casual
+  - Casual
 ---
 
 :figure-caption: Img
