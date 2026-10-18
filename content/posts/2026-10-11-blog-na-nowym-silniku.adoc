@@ -1,0 +1,90 @@
+---
+title: Blog na nowym silniku - migracja do Roq
+description: Mój blog przeszedł z Scully (Angular) na Roq. W tym wpisie opisuję, co się zmieniło oraz pokazuję nowe możliwości, takie jak diagramy z kodu, kolorowanie składni i emoji.
+date: 2026-10-11
+image: sites/home-bg.jpg
+slug: blog-na-nowym-silniku
+author: miro
+category: Blog
+tags:
+  - Roq
+  - Quarkus
+  - Java
+content-toc: true
+content-toc-title: Spis
+---
+
+:qute:
+
+:figure-caption: Img.
+
+Po kilku latach blog działał na generatorze statycznym Scully opartym o Angulara. Postanowiłem przenieść go na Roq – generator statyczny stron zbudowany na Quarkusie. Dzięki temu cały blog jest teraz budowany przez Javę, a treść mogę pisać w AsciiDoc.
+
+== Co się zmieniło
+
+Największą zmianą jest silnik: zamiast Node.js i Angulara używam Quarkusa oraz wtyczek Roq. Z tego wynikają nowe możliwości:
+
+* treść w AsciiDoc (postach) oraz Markdown (podstrony),
+* tagi i kategorie,
+* wyszukiwarka (lunr),
+* generowanie kart Open Graph,
+* diagramy z kodu dzięki Kroki,
+* kolorowanie składni dzięki highlight.js.
+
+== Jak działa przetwarzanie treści
+
+AsciiDoc najpierw przechodzi przez Qute, a następnie przez Asciidoctor, który produkuje HTML. Można to przedstawić w prosty sposób:
+
+{#diagram asciidoc=true language="mermaid" alt="Przepływ treści w Roq" diagramOutputFormat="svg"}
+graph LR
+  A[AsciiDoc / Markdown] --> B[Qute]
+  B --> C[Asciidoctor]
+  C --> D[HTML]
+{/}
+
+NOTE: Diagram powyżej został wygenerowany na podstawie kodu Mermaid przez serwer Kroki.
+
+== Admonitions
+
+Roq i Asciidoctor wspierają wyróżnione bloki informacyjne. Oto wszystkie dostępne warianty:
+
+NOTE: Zwykła notatka z dodatkową informacją.
+
+TIP: Wskazówka, która może się przydać.
+
+IMPORTANT: Ważna informacja, o której warto pamiętać.
+
+WARNING: Ostrzeżenie o możliwych problemach.
+
+CAUTION: Przestroga – warto zachować ostrożność.
+
+== Kolorowanie składni
+
+Bloki kodu są kolorowane automatycznie. Oto kilka przykładów.
+
+[source,bash]
+----
+roq generate
+roq start
+----
+
+[source,properties]
+----
+site.url=https://miroslaw.ovh
+quarkus.asciidoc.attributes.icons=font
+----
+
+[source,java]
+----
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Witaj, Roq!");
+    }
+}
+----
+
+== Emoji
+
+Emoji można wstawiać bezpośrednio jako znaki Unicode: 😊 🐧 🚀 ☕ ❤️.
+
+Na koniec – miłego czytania! 🎉

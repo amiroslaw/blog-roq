@@ -82,11 +82,11 @@
 			 <artifactId>quarkus-roq-plugin-series</artifactId>
 			<version>${roq.version}</version>
 		 </dependency>
-			<!--      <dependency> -->
-			<!--          <groupId>io.quarkiverse.roq</groupId> -->
-			<!--          <artifactId>quarkus-roq-plugin-diagram</artifactId> -->
-			<!-- <version>${roq.version}</version> -->
-			<!--      </dependency> -->
+		 <dependency>
+			 <groupId>io.quarkiverse.roq</groupId>
+			 <artifactId>quarkus-roq-plugin-diagram</artifactId>
+			<version>${roq.version}</version>
+		 </dependency>
         <dependency>
             <groupId>io.quarkiverse.roq</groupId>
             <artifactId>quarkus-roq-plugin-faker</artifactId>
