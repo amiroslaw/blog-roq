@@ -1,10 +1,10 @@
 ---
-title: Blog na nowym silniku - migracja do Roq
+title: Blog na nowym silniku
 description: Mój blog przeszedł z Scully (Angular) na Roq. W tym wpisie opisuję, co się zmieniło oraz pokazuję nowe możliwości, takie jak diagramy z kodu, kolorowanie składni i emoji.
 date: 2026-10-11
-image: sites/home-bg.jpg
 slug: blog-na-nowym-silniku
 author: miro
+image: roq-small.webp
 category: Blog
 tags:
   - Roq
@@ -34,13 +34,6 @@ Największą zmianą jest silnik: zamiast Node.js i Angulara używam Quarkusa or
 == Jak działa przetwarzanie treści
 
 AsciiDoc najpierw przechodzi przez Qute, a następnie przez Asciidoctor, który produkuje HTML. Można to przedstawić w prosty sposób:
-
-{#diagram asciidoc=true language="mermaid" alt="Przepływ treści w Roq" diagramOutputFormat="svg"}
-graph LR
-  A[AsciiDoc / Markdown] --> B[Qute]
-  B --> C[Asciidoctor]
-  C --> D[HTML]
-{/}
 
 NOTE: Diagram powyżej został wygenerowany na podstawie kodu Mermaid przez serwer Kroki.
 
