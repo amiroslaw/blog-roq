@@ -1,6 +1,6 @@
 ---
 title: Blog na nowym silniku
-description: Mój blog przeszedł z Scully (Angular) na Roq. W tym wpisie opisuję, co się zmieniło oraz pokazuję nowe możliwości, takie jak diagramy z kodu, kolorowanie składni i emoji.
+description: Mój blog przeszedł z Scully (Angular) na Roq. W tym wpisie opisuję, co się zmieniło.
 date: 2026-10-11
 slug: blog-na-nowym-silniku
 author: miro
@@ -18,66 +18,161 @@ content-toc-title: Spis
 
 :figure-caption: Img.
 
-Po kilku latach blog działał na generatorze statycznym Scully opartym o Angulara. Postanowiłem przenieść go na Roq – generator statyczny stron zbudowany na Quarkusie. Dzięki temu cały blog jest teraz budowany przez Javę, a treść mogę pisać w AsciiDoc.
+== Założenia
 
-== Co się zmieniło
+Przez kilka lat mój blog działał na generatorze statycznym Scully opartym o Angulara. Prawdę mówiąc, jedynym argumentem za używaniem Scully była chęć nauki Angulara. Postanowiłem przenieść go na Roq – generator stron statycznych zbudowany na Quarkusie. Dzięki temu cały blog jest teraz budowany w Javie, a treść mogę pisać w formacie AsciiDoc.
 
-Największą zmianą jest silnik: zamiast Node.js i Angulara używam Quarkusa oraz wtyczek Roq. Z tego wynikają nowe możliwości:
+Głównym bodźcem do migracji był fakt, że projekt Scully nie jest już rozwijany. Z tego względu skupię się na opisie Roq zamiast na bezpośrednim porównywaniu obu projektów. Chciałem po prostu przejść na narzędzie, które natywnie wspiera posty tworzone w AsciiDoc i zapewnia bezproblemowe utrzymanie serwisu.
 
-* treść w AsciiDoc (postach) oraz Markdown (podstrony),
-* tagi i kategorie,
-* wyszukiwarka (lunr),
-* generowanie kart Open Graph,
-* diagramy z kodu dzięki Kroki,
-* kolorowanie składni dzięki highlight.js.
+Pod kątem wyświetlania bloga dla czytelnika różnica jest zasadnicza. Scully serwował aplikację SPA (Single Page Application) w Angularze – przeglądarka po pobraniu strony musiała przetworzyć spore paczki JavaScriptu, aby zainicjalizować framework (tzw. hydratacja). Roq generuje natomiast czysty, lekki HTML i CSS z absolutnym minimum kodu JS. W efekcie strona renderuje się natychmiast, nie obciąża urządzeń mobilnych ciężkim runtime'em frameworka, a treść jest dostępna od pierwszej milisekundy, bez czekania na załadowanie i wykonanie skryptów.
 
-== Jak działa przetwarzanie treści
+Od SSG oczekuje następujących funkcjonalności - im więcej rozwiązań out of the box, tym lepiej.
 
-AsciiDoc najpierw przechodzi przez Qute, a następnie przez Asciidoctor, który produkuje HTML. Można to przedstawić w prosty sposób:
+* posty pisane w AsciiDoc
+* paginacja artykułów,
+* lokalna wyszukiwarka
+* tagi oraz kategorie wpisów,
+* kanał RSS,
+* automatyczny spis treści (TOC),
+* automatyczne generowanie kart Open Graph do mediów społecznościowych,
+* kolorowanie składni kodu źródłowego,
+* wsparcie dla diagramów,
+* automatyczny deployment za pomocą GitHub Actions,
+* szybki tryb developerski z przeładowywaniem na żywo (*live reload*).
+* obsługa emoji oraz bloków wyróżnień (admonitions: *note*, *warning*, *important*),
 
-NOTE: Diagram powyżej został wygenerowany na podstawie kodu Mermaid przez serwer Kroki.
+== Tworzenie szablonów
 
-== Admonitions
+W procesie generowania strony treść w AsciiDoc najpierw przechodzi przez silnik Qute, a następnie przez Asciidoctor, który produkuje wynikowy kod HTML.
 
-Roq i Asciidoctor wspierają wyróżnione bloki informacyjne. Oto wszystkie dostępne warianty:
+Kluczową rolę odgrywa tu https://quarkus.io/guides/qute/[Qute silnik szablonów] – silnik zaprojektowany z myślą o filozofii Quarkusa. Jego największą zaletą jest bezpieczeństwo typów (type-safety) i sprawdzanie poprawności obiektów Java już na etapie kompilacji, co zapobiega błędom literówek w polach czy metodach, zanim strona w ogóle zostanie wygenerowana.
 
-NOTE: Zwykła notatka z dodatkową informacją.
+Aby lepiej zrozumieć proces budowania witryny, warto przyjrzeć się strukturze całego projektu. Roq stawia na czytelną, konwencjonalną hierarchię katalogów, w której przejrzyście rozdzielono treść, pliki danych, zasoby statyczne oraz konfigurację.
 
-TIP: Wskazówka, która może się przydać.
+Każdy dokument z treścią w katalogu `content/` (niezależnie od tego, czy tworzymy wpis w AsciiDoc `.adoc`, Markdown `.md`, czy podstronę HTML) rozpoczyna się od sekcji metadanych – tzw. frontmattera (formatera metadanych), wydzielonego potrójnymi myślnikami `---`. To w nim deklarujemy kluczowe właściwości strony, takie jak tytuł, opis, tagi czy datę publikacji.
 
-IMPORTANT: Ważna informacja, o której warto pamiętać.
-
-WARNING: Ostrzeżenie o możliwych problemach.
-
-CAUTION: Przestroga – warto zachować ostrożność.
-
-== Kolorowanie składni
-
-Bloki kodu są kolorowane automatycznie. Oto kilka przykładów.
-
-[source,bash]
+.Hierarchia plików w projekcie Roq
 ----
-roq generate
-roq start
+my-blog/
+├── content/                    # Strony i posty na blogu
+│   ├── index.html              # Strona główna (zawiera też dane globalne witryny)
+│   ├── blog.html               # Lista wpisów na blogu
+│   ├── about.md                # Strona „O mnie”
+│   ├── 404.html                # Strona błędu 404
+│   └── posts/                  # Kolekcja artykułów
+│       └── 2024-10-13-the-first-roq/
+│           ├── index.adoc      # Treść posta w AsciiDoc
+│           └── blog.avif       # Okładka posta
+├── data/                       # Pliki danych (YAML/JSON)
+│   ├── menu.yml                # Menu nawigacyjne
+│   └── authors.yml             # Profile autorów
+├── public/                     # Zasoby statyczne (obrazki, favicon itp.)
+│   └── images/
+│       ├── logo.svg
+│       └── mascot.svg
+├── web/                        # Pliki CSS i JS (bundlowane automatycznie)
+│   └── _custom.css             # Własne style i nadpisania kolorów
+├── pom.xml                     # Plik konfiguracyjny Mavena
+└── .github/workflows/
+    └── deploy.yml              # Automatyczne wdrożenie na GitHub Pages
 ----
 
-[source,properties]
-----
-site.url=https://miroslaw.ovh
-quarkus.asciidoc.attributes.icons=font
-----
+=== Dane
 
+Roq udostępnia szereg gotowych zmiennych (opisanych szczegółowo w https://iamroq.dev/docs/basics/#variables[dokumentacji Roq]), takich jak adres URL, ścieżki do obrazów czy cała kolekcja wpisów.
+
+W szablonach można bardzo łatwo odczytywać metadane z nagłówka (frontmatter) pliku Markdown lub AsciiDoc. Metadane można również definiować bezpośrednio w zwykłych plikach HTML. Dodatkowo, umieszczając pliki JSON lub YAML w katalogu `data/`, każdy z nich automatycznie staje się nazwanym beanem CDI, do którego mamy bezpośredni dostęp w dowolnym szablonie Qute.
+
+Silnik Qute wspiera także mechanizm metod rozszerzających szablony (*Template Extension Methods*). Pozwalają one na dodawanie nowych metod do istniejących typów i wywoływanie ich bezpośrednio w szablonach. Przeniesienie logiki prezentacji z szablonu do kodu Javy umożliwia realizację bardziej złożonych operacji, ułatwia ponowne użycie kodu i pozwala zachować czystość samych szablonów HTML.
+
+W poniższym kodzie pokazuję, jak dynamicznie zmieniać wersję obrazka w zależności od tego, czy ma się wyświetlić na stronie pojedynczego artykułu, czy jako miniatura na liście wpisów:
+
+.Rozszerzenie szablonu TemplateExtension w Javie
 [source,java]
 ----
-public class Hello {
-    public static void main(String[] args) {
-        System.out.println("Witaj, Roq!");
+@TemplateExtension
+public class PostImages {
+    private static final String THUMBNAIL_SUFFIX = "-small";
+
+    static RoqUrl cover(Page page) {
+        if (page == null) {
+            return null;
+        }
+        String image = page.data().getString("image");
+        if (image == null || !image.contains(THUMBNAIL_SUFFIX)) {
+            return page.image();
+        }
+        String full = image.replace(THUMBNAIL_SUFFIX, "");
+        return page.imageExists(full) ? page.image(full) : page.image();
     }
 }
 ----
 
-== Emoji
+== Pluginy
 
-Emoji można wstawiać bezpośrednio jako znaki Unicode: 😊 🐧 🚀 ☕ ❤️.
+Poniżej zebrałem wtyczki, których używam lub które są warte uwagi. Wszystkie oficjalne rozszerzenia można znaleźć w https://iamroq.dev/marketplace/[Roq Marketplace]. Zauważyłem, że twórcy projektu regularnie publikują nowe wtyczki.
 
-Na koniec – miłego czytania! 🎉
+.Warte uwagi rozszerzenia
+* `quarkus-roq-theme-default` – domyślny motyw,
+* `quarkus-roq-plugin-markdown` – obsługa stron w formacie Markdown,
+* `quarkus-roq-plugin-asciidoc-jruby` – obsługa postów w AsciiDoc oparta na JRuby (istnieje też lżejsza biblioteka bez JRuby, ale oferuje ona mniejszą kompatybilność ze specyfikacją AsciiDoc),
+* `quarkus-roq-plugin-sitemap` – generowanie mapy witryny (`sitemap.xml`),
+* `quarkus-roq-plugin-lunr` – lokalna wyszukiwarka tekstowa na stronie,
+* `quarkus-roq-plugin-toc` – automatyczny spis treści (*Table of Contents*),
+* `quarkus-roq-plugin-tagging` – kategoryzacja i tagowanie wpisów,
+* `quarkus-roq-plugin-og-card` – generowanie grafik Open Graph dla mediów społecznościowych,
+* `quarkus-roq-plugin-series` – grupowanie powiązanych artykułów w serie wpisów,
+* `quarkus-roq-plugin-diagram` – generowanie diagramów z kodu,
+* `quarkus-roq-plugin-faker` – tworzenie przykładowych postów w celu przetestowania wyglądu bloga.
+
+Co ciekawe, szablony tematyczne (*themes*) dodaje się po prostu jako zależności w pliku `pom.xml` Mavena (na ten moment dostępne są cztery oficjalne szablony).
+
+Nie wszystkie elementy AsciiDoc wyświetlają się domyślnie dokładnie tak, jak bym oczekiwał. Przykładowo lista zadań (*checklist*) renderuje się jako zwykła lista punktowana. Jest to jednak drobiazg, który można bez problemu nadpisać stylami CSS.
+
+Do kolorowania składni kodu Roq proponuje bibliotekę highlight.js. Aby uzyskać pełną funkcjonalność, dopisałem krótki skrypt JavaScript obsługujący ciemny motyw oraz etykietę wskazującą język kodu. Co więcej, aby strona nie pobierała zbędnych skryptów dla wszystkich możliwych języków, warto rejestrować tylko te, z których rzeczywiście korzystamy, w pliku common znajdują się najpopularniejsze języki:
+
+.Rejestracja wybranych języków w pliku syntax.js
+[source,javascript]
+----
+import hljs from 'highlight.js/lib/common';
+import clojure from 'highlight.js/lib/languages/clojure';
+import dockerfile from 'highlight.js/lib/languages/dockerfile';
+import http from 'highlight.js/lib/languages/http';
+hljs.registerLanguage('clojure', clojure);
+hljs.registerLanguage('dockerfile', dockerfile);
+hljs.registerLanguage('http', http);
+----
+
+== Interaktywność
+
+Roq pozwala w łatwy sposób wzbogacić stronę o interaktywne elementy.
+Można to zrealizować na dwa sposoby:
+
+1. Za pomocą zewnętrznego komponentu – https://iamroq.dev/posts/add-comments-web-component/[dodawania komentarzy przez Web Component].
+2. Wykorzystując **tryb hybrydowy (hybrid mode)** – https://iamroq.dev/posts/add-comments-hybrid/[komentarzach w trybie hybrydowym].
+
+W pierwszym podejściu statyczną stronę integrujemy z osobnym, zewnętrznym serwisem (np. mikroserwisem REST API), z którym przeglądarka komunikuje się asynchronicznie w celu pobierania i przesyłania danych bez przeładowywania witryny. W oficjalnym tutorialu wykorzystano do tego bibliotekę https://lit.dev/[Lit], jednak zamiast niej można z powodzeniem sięgnąć po rozwiązania takie jak https://data-star.dev/[Datastar] czy https://htmx.org/[htmx].
+
+W trybie hybrydowym Roq łączy zalety generatora statycznego i pełnoprawnej aplikacji Quarkusa. Wtyczka hybrydowa umożliwia renderowanie wybranych podstron dynamicznie na każde żądanie (zamiast generować je wyłącznie podczas budowy projektu), zachowując przy tym buforowanie w pamięci lub na dysku. Dzięki temu blog serwuje statyczne artykuły z maksymalną prędkością, a jednocześnie pozwala na integrację z bazą danych i beanami CDI w dynamicznych sekcjach serwisu.
+
+Do obsługi komentarzy na swoim blogu postawiłem jednak na gotowe rozwiązanie – https://utteranc.es/[Utterances], które działa w oparciu o repozytorium na GitHubie (przechowując dyskusje jako GitHub Issues).
+
+== Development
+
+Proces tworzenia postów i lokalnego rozwoju bloga jest bardzo wygodny. Roq oferuje szereg pomocniczych poleceń CLI do generowania szablonów stron czy artykułów. Po uruchomieniu polecenia `roq start` (lub `quarkus dev`) blog natychmiast startuje lokalnie. Dzięki mechanizmowi *live-reload* wszelkie zmiany w szablonach oraz plikach Markdown czy AsciiDoc są widoczne w przeglądarce już po ułamku sekundy.
+
+Dodatkowo w trybie deweloperskim dostępny jest wbudowany webowy edytor treści (zintegrowany z Quarkus Dev UI). Działa on jak lekki, lokalny CMS – pozwala na wygodne tworzenie i edycję wpisów, zarządzanie frontmatterem oraz podgląd zmian na żywo bez opuszczania przeglądarki.
+
+Całość wieńczy automatyzacja wdrożenia: dzięki gotowemu workflow dla GitHub Actions, każde wypchnięcie zmian do repozytorium automatycznie generuje i publikuje statyczne pliki HTML na GitHub Pages.
+
+== Werdykt
+
+Podsumowując dotychczasowe wrażenia – Roq to bardzo obiecujący generator, choć na ten moment napotkałem kilka obszarów, które wymagają jeszcze dopracowania:
+
+* **Brak wbudowanej wielojęzyczności (i18n)**: Na ten moment brakuje mechanizmu przełączania wersji językowych. Tymczasowym rozwiązaniem jest ręczne dodanie linków do wersji polskiej i angielskiej w nagłówku posta. Z zapowiedzi twórców wynika jednak, że obsługa i18n znajduje się w planach rozwojowych projektu.
+* **Narzut „magii” przy gotowych szablonach**: Korzystając z oficjalnych motywów (`theme`), część stylów i szablonów dostarczana jest wewnątrz paczek JAR. Na początku nie do końca intuicyjny może być też podział na szablony w katalogu `templates/` oraz te wstrzykiwane w `content/`.
+* **Obsługa diagramów**: Diagramy można tworzyć lokalnie za pomocą biblioteki współpracującej z AsciiDoc lub odpytywać zewnętrzny serwer Kroki. W przypadku zapytań do Kroki napotkałem błędy komunikacji, więc ten temat wymaga jeszcze głębszego zbadania.
+
+Mimo tych drobnych wyzwań, przejście na Roq i AsciiDoc oceniam jako bardzo udany krok. Otrzymałem szybki, lekki blog kompilowany w ekosystemie Javy, bez narzutu npm, z doskonałym wsparciem dla AsciiDoc i pełną swobodą rozbudowy.
+
+W przyszłości opiszę dlaczego wybrałem AsciiDoc do tworzenia postów, jakie to daje możliwości, oraz mogę przetestować interaktywne zmiany na stronie za pomocą Datastar.

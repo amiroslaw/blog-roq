@@ -1,0 +1,72 @@
+---
+draft: true 
+title: Integracja AsciiDoc z roq
+description: W tym wpisie pokazuje nowe możliwości AsciiDoc, takie jak diagramy z kodu, kolorowanie składni i emoji.
+date: 2026-10-11
+slug: roq-asciidoc
+author: miro
+image: roq-small.webp
+category: Blog
+tags:
+  - Roq
+  - Quarkus
+  - Java
+content-toc: true
+content-toc-title: Spis
+---
+
+:qute:
+
+== Admonitions
+
+Roq i Asciidoctor wspierają wyróżnione bloki informacyjne. Oto wszystkie dostępne warianty:
+
+NOTE: Zwykła notatka z dodatkową informacją.
+
+TIP: Wskazówka, która może się przydać.
+
+IMPORTANT: Ważna informacja, o której warto pamiętać.
+
+WARNING: Ostrzeżenie o możliwych problemach.
+
+CAUTION: Przestroga – warto zachować ostrożność.
+
+== Bloki
+
+.collapsible
+[%collapsible]
+====
+Example block turns into collapsible summary/details.
+====
+
+
+== Kolorowanie składni
+
+Bloki kodu są kolorowane automatycznie. Oto kilka przykładów.
+
+[source,bash]
+----
+roq generate
+roq start
+----
+
+[source,properties]
+----
+site.url=https://miroslaw.ovh
+quarkus.asciidoc.attributes.icons=font
+----
+
+[source,java]
+----
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Witaj, Roq!");
+    }
+}
+----
+
+== Emoji
+
+Emoji można wstawiać bezpośrednio jako znaki Unicode: 😊 🐧 🚀 ☕ ❤️.
+
+Na koniec – miłego czytania! 🎉
