@@ -1,6 +1,6 @@
 AGENTS.md
 # generated diagram cache
-diag-*.cache
+*.cache
 
 #Maven
 target/
