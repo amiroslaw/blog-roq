@@ -45,7 +45,7 @@ Od SSG oczekuje następujących funkcjonalności - im więcej rozwiązań out of
 
 W procesie generowania strony treść w AsciiDoc najpierw przechodzi przez silnik Qute, a następnie przez Asciidoctor, który produkuje wynikowy kod HTML.
 
-[plantuml, format="svg"]
+[plantuml, diag-flow, format="svg"]
 ----
 @startuml
 left to right direction
@@ -68,7 +68,7 @@ Aby lepiej zrozumieć proces budowania witryny, warto przyjrzeć się strukturze
 Każdy dokument z treścią w katalogu `content/` (niezależnie od tego, czy tworzymy wpis w AsciiDoc `.adoc`, Markdown `.md`, czy podstronę HTML) rozpoczyna się od sekcji metadanych – tzw. frontmattera (formatera metadanych), wydzielonego potrójnymi myślnikami `---`. To w nim deklarujemy kluczowe właściwości strony, takie jak tytuł, opis, tagi czy datę publikacji.
 
 .Hierarchia plików w projekcie Roq
-[plantuml, format="svg"]
+[plantuml, diag-files, format="svg"]
 ----
 @startsalt
 {
@@ -145,14 +145,11 @@ Poniżej zebrałem wtyczki, których używam lub które są warte uwagi. Wszystk
 * `quarkus-roq-plugin-tagging` – kategoryzacja i tagowanie wpisów,
 * `quarkus-roq-plugin-og-card` – generowanie grafik Open Graph dla mediów społecznościowych,
 * `quarkus-roq-plugin-series` – grupowanie powiązanych artykułów w serie wpisów,
-* `quarkus-roq-plugin-faker` – tworzenie przykładowych postów w celu przetestowania wyglądu bloga.
-* `quarkus-roq-plugin-diagram` – generowanie diagramów z kodu przez serwer Korki
-* `asciidoctorj-diagram-plantuml` - używa PlantUML 
+* `quarkus-roq-plugin-faker` – tworzenie przykładowych postów w celu przetestowania wyglądu bloga,
+* `quarkus-roq-plugin-diagram` – generowanie diagramów z kodu za pośrednictwem serwisu https://kroki.io/[Kroki],
+* `asciidoctorj-diagram-plantuml` – bezpośrednia obsługa diagramów PlantUML w silniku AsciidoctorJ.
 
-Diagramy można tworzyć lokalnie za pomocą biblioteki współpracującej z AsciiDoc lub odpytywać zewnętrzny serwer Kroki. 
-W przypadku zapytań do Kroki, wysyłamy request do tego serwisu (lokalnie możemy go postawić w docker), aby otrzymać svg które będzie zapisane jako static image.
-biblioteka `quarkus-roq-plugin-diagram` ma swój format dla w nagłówku, nie stosujemy asciidoc block, tak jak przy bibliotekcę PlantUML
-
+Diagramy można tworzyć na dwa sposoby: lokalnie za pomocą rozszerzenia współpracującego z AsciiDoc albo odpytując zewnętrzny serwis Kroki. W przypadku Kroki zapytanie wysyłane jest do API (w środowisku lokalnym możemy uruchomić je w kontenerze Dockera lub wskazać publiczną instancję), a w odpowiedzi generowany jest plik SVG zapisywany jako statyczny zasób strony. Warto pamiętać, że wtyczka `quarkus-roq-plugin-diagram` wymaga użycia dedykowanych tagów szablonu Qute, przez co nie stosujemy w niej tradycyjnego bloku AsciiDoc, jak ma to miejsce w przypadku rozszerzenia PlantUML.
 
 Co ciekawe, szablony tematyczne (*themes*) dodaje się po prostu jako zależności w pliku `pom.xml` Mavena (na ten moment dostępne są cztery oficjalne szablony).
 

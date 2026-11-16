@@ -1,4 +1,7 @@
 AGENTS.md
+# generated diagrams
+diag-*.cache
+diag*.svg
 
 #Maven
 target/
