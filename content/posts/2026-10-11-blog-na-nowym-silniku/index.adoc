@@ -45,6 +45,22 @@ Od SSG oczekuje następujących funkcjonalności - im więcej rozwiązań out of
 
 W procesie generowania strony treść w AsciiDoc najpierw przechodzi przez silnik Qute, a następnie przez Asciidoctor, który produkuje wynikowy kod HTML.
 
+[plantuml, format="svg"]
+----
+@startuml
+left to right direction
+
+rectangle "Treść w AsciiDoc" as A
+rectangle "Silnik Qute" as B
+rectangle "Asciidoctor" as C
+rectangle "Wynikowy kod HTML" as D
+
+A --> B
+B --> C
+C --> D
+@enduml
+----
+
 Kluczową rolę odgrywa tu https://quarkus.io/guides/qute/[Qute silnik szablonów] – silnik zaprojektowany z myślą o filozofii Quarkusa. Jego największą zaletą jest bezpieczeństwo typów (type-safety) i sprawdzanie poprawności obiektów Java już na etapie kompilacji, co zapobiega błędom literówek w polach czy metodach, zanim strona w ogóle zostanie wygenerowana.
 
 Aby lepiej zrozumieć proces budowania witryny, warto przyjrzeć się strukturze całego projektu. Roq stawia na czytelną, konwencjonalną hierarchię katalogów, w której przejrzyście rozdzielono treść, pliki danych, zasoby statyczne oraz konfigurację.
@@ -52,29 +68,36 @@ Aby lepiej zrozumieć proces budowania witryny, warto przyjrzeć się strukturze
 Każdy dokument z treścią w katalogu `content/` (niezależnie od tego, czy tworzymy wpis w AsciiDoc `.adoc`, Markdown `.md`, czy podstronę HTML) rozpoczyna się od sekcji metadanych – tzw. frontmattera (formatera metadanych), wydzielonego potrójnymi myślnikami `---`. To w nim deklarujemy kluczowe właściwości strony, takie jak tytuł, opis, tagi czy datę publikacji.
 
 .Hierarchia plików w projekcie Roq
+[plantuml, format="svg"]
 ----
-my-blog/
-├── content/                    # Strony i posty na blogu
-│   ├── index.html              # Strona główna (zawiera też dane globalne witryny)
-│   ├── blog.html               # Lista wpisów na blogu
-│   ├── about.md                # Strona „O mnie”
-│   ├── 404.html                # Strona błędu 404
-│   └── posts/                  # Kolekcja artykułów
-│       └── 2024-10-13-the-first-roq/
-│           ├── index.adoc      # Treść posta w AsciiDoc
-│           └── blog.avif       # Okładka posta
-├── data/                       # Pliki danych (YAML/JSON)
-│   ├── menu.yml                # Menu nawigacyjne
-│   └── authors.yml             # Profile autorów
-├── public/                     # Zasoby statyczne (obrazki, favicon itp.)
-│   └── images/
-│       ├── logo.svg
-│       └── mascot.svg
-├── web/                        # Pliki CSS i JS (bundlowane automatycznie)
-│   └── _custom.css             # Własne style i nadpisania kolorów
-├── pom.xml                     # Plik konfiguracyjny Mavena
-└── .github/workflows/
-    └── deploy.yml              # Automatyczne wdrożenie na GitHub Pages
+@startsalt
+{
+{T
+ + 📁 <b>my-blog/</b>
+ ++ 📁 <b>content/</b> | <i>Strony i posty na blogu</i>
+ +++ 📄 index.html | <i>Strona główna (zawiera też dane globalne witryny)</i>
+ +++ 📄 blog.html | <i>Lista wpisów na blogu</i>
+ +++ 📄 about.md | <i>Strona „O mnie”</i>
+ +++ 📄 404.html | <i>Strona błędu 404</i>
+ +++ 📁 <b>posts/</b> | <i>Kolekcja artykułów</i>
+ ++++ 📁 <b>2024-10-13-the-first-roq/</b>
+ +++++ 📝 index.adoc | <i>Treść posta w AsciiDoc</i>
+ +++++ 🖼️ blog.avif | <i>Okładka posta</i>
+ ++ 📁 <b>data/</b> | <i>Pliki danych (YAML/JSON)</i>
+ +++ ⚙️ menu.yml | <i>Menu nawigacyjne</i>
+ +++ ⚙️ authors.yml | <i>Profile autorów</i>
+ ++ 📁 <b>public/</b> | <i>Zasoby statyczne (obrazki, favicon itp.)</i>
+ +++ 📁 <b>images/</b>
+ ++++ 🖼️ logo.svg
+ ++++ 🖼️ mascot.svg
+ ++ 📁 <b>web/</b> | <i>Pliki CSS i JS (bundlowane automatycznie)</i>
+ +++ 🎨 _custom.css | <i>Własne style i nadpisania kolorów</i>
+ ++ ⚙️ pom.xml | <i>Plik konfiguracyjny Mavena</i>
+ ++ 📁 <b>.github/workflows/</b>
+ +++ ⚙️ deploy.yml | <i>Automatyczne wdrożenie na GitHub Pages</i>
+}
+}
+@endsalt
 ----
 
 === Dane
@@ -122,8 +145,14 @@ Poniżej zebrałem wtyczki, których używam lub które są warte uwagi. Wszystk
 * `quarkus-roq-plugin-tagging` – kategoryzacja i tagowanie wpisów,
 * `quarkus-roq-plugin-og-card` – generowanie grafik Open Graph dla mediów społecznościowych,
 * `quarkus-roq-plugin-series` – grupowanie powiązanych artykułów w serie wpisów,
-* `quarkus-roq-plugin-diagram` – generowanie diagramów z kodu,
 * `quarkus-roq-plugin-faker` – tworzenie przykładowych postów w celu przetestowania wyglądu bloga.
+* `quarkus-roq-plugin-diagram` – generowanie diagramów z kodu przez serwer Korki
+* `asciidoctorj-diagram-plantuml` - używa PlantUML 
+
+Diagramy można tworzyć lokalnie za pomocą biblioteki współpracującej z AsciiDoc lub odpytywać zewnętrzny serwer Kroki. 
+W przypadku zapytań do Kroki, wysyłamy request do tego serwisu (lokalnie możemy go postawić w docker), aby otrzymać svg które będzie zapisane jako static image.
+biblioteka `quarkus-roq-plugin-diagram` ma swój format dla w nagłówku, nie stosujemy asciidoc block, tak jak przy bibliotekcę PlantUML
+
 
 Co ciekawe, szablony tematyczne (*themes*) dodaje się po prostu jako zależności w pliku `pom.xml` Mavena (na ten moment dostępne są cztery oficjalne szablony).
 
@@ -171,7 +200,6 @@ Podsumowując dotychczasowe wrażenia – Roq to bardzo obiecujący generator, c
 
 * **Brak wbudowanej wielojęzyczności (i18n)**: Na ten moment brakuje mechanizmu przełączania wersji językowych. Tymczasowym rozwiązaniem jest ręczne dodanie linków do wersji polskiej i angielskiej w nagłówku posta. Z zapowiedzi twórców wynika jednak, że obsługa i18n znajduje się w planach rozwojowych projektu.
 * **Narzut „magii” przy gotowych szablonach**: Korzystając z oficjalnych motywów (`theme`), część stylów i szablonów dostarczana jest wewnątrz paczek JAR. Na początku nie do końca intuicyjny może być też podział na szablony w katalogu `templates/` oraz te wstrzykiwane w `content/`.
-* **Obsługa diagramów**: Diagramy można tworzyć lokalnie za pomocą biblioteki współpracującej z AsciiDoc lub odpytywać zewnętrzny serwer Kroki. W przypadku zapytań do Kroki napotkałem błędy komunikacji, więc ten temat wymaga jeszcze głębszego zbadania.
 
 Mimo tych drobnych wyzwań, przejście na Roq i AsciiDoc oceniam jako bardzo udany krok. Otrzymałem szybki, lekki blog kompilowany w ekosystemie Javy, bez narzutu npm, z doskonałym wsparciem dla AsciiDoc i pełną swobodą rozbudowy.
 
