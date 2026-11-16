@@ -70,35 +70,23 @@ Każdy dokument z treścią w katalogu `content/` (niezależnie od tego, czy two
 .Hierarchia plików w projekcie Roq
 [plantuml, diag-files, format="svg"]
 ----
-@startsalt
-{
-{T
- + 📁 <b>my-blog/</b>
- ++ 📁 <b>content/</b> | <i>Strony i posty na blogu</i>
- +++ 📄 index.html | <i>Strona główna (zawiera też dane globalne witryny)</i>
- +++ 📄 blog.html | <i>Lista wpisów na blogu</i>
- +++ 📄 about.md | <i>Strona „O mnie”</i>
- +++ 📄 404.html | <i>Strona błędu 404</i>
- +++ 📁 <b>posts/</b> | <i>Kolekcja artykułów</i>
- ++++ 📁 <b>2024-10-13-the-first-roq/</b>
- +++++ 📝 index.adoc | <i>Treść posta w AsciiDoc</i>
- +++++ 🖼️ blog.avif | <i>Okładka posta</i>
- ++ 📁 <b>data/</b> | <i>Pliki danych (YAML/JSON)</i>
- +++ ⚙️ menu.yml | <i>Menu nawigacyjne</i>
- +++ ⚙️ authors.yml | <i>Profile autorów</i>
- ++ 📁 <b>public/</b> | <i>Zasoby statyczne (obrazki, favicon itp.)</i>
- +++ 📁 <b>images/</b>
- ++++ 🖼️ logo.svg
- ++++ 🖼️ mascot.svg
- ++ 📁 <b>web/</b> | <i>Pliki CSS i JS (bundlowane automatycznie)</i>
- +++ 🎨 _custom.css | <i>Własne style i nadpisania kolorów</i>
- ++ ⚙️ pom.xml | <i>Plik konfiguracyjny Mavena</i>
- ++ 📁 <b>.github/workflows/</b>
- +++ ⚙️ deploy.yml | <i>Automatyczne wdrożenie na GitHub Pages</i>
-}
-}
-@endsalt
+@startfiles
+/my-blog/content/index.html
+/my-blog/content/blog.html
+/my-blog/content/about.md
+/my-blog/content/404.html
+/my-blog/content/posts/2024-10-13-the-first-roq/index.adoc
+/my-blog/content/posts/2024-10-13-the-first-roq/blog.avif
+/my-blog/data/menu.yml
+/my-blog/data/authors.yml
+/my-blog/public/images/logo.svg
+/my-blog/public/images/mascot.svg
+/my-blog/web/_custom.css
+/my-blog/pom.xml
+/my-blog/.github/workflows/deploy.yml
+@endfiles
 ----
+
 
 === Dane
 
